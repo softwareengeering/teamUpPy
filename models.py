@@ -35,7 +35,7 @@ class Users(db.Model):
     id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
     name = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
     openId = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
-    Sno = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
+    sno = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
 class Class(db.Model):
     '''
     id（可做邀请码）

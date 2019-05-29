@@ -27,10 +27,10 @@ def test():
     print (Userres)
     for x in Userres:
         userTmp = {}
-        userTmp.id =x.id
-        userTmp.name = x.name
-        userTmp.openId = x.openId
-        userTmp.sno = x.sno
+        userTmp['id'] =x.id
+        userTmp['name'] = x.name
+        userTmp['openId'] = x.openId
+        userTmp['sno'] = x.sno
         userList.append(userTmp)
     print (userList)
     resJson = {}
