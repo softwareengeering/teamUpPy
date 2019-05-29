@@ -29,8 +29,8 @@ Page({
           method: 'GET',
           success: function (res) {
             console.log('成功获取OPENID和SESSION_KEY',res.data)
-            OPEN_ID = res.data.openid;//获取到的openid 
-            UserOpenID = globalData.OPEN_ID; 
+            app.globalData.OPEN_ID = res.data.openid;//获取到的openid 
+            OPEN_ID = app.globalData.OPEN_ID; 
             SESSION_KEY = res.data.session_key;//获取到session_key  
             console.log(OPEN_ID.length)
             console.log(SESSION_KEY.length)
@@ -55,8 +55,9 @@ Page({
                 const data = JSON.parse(res.data)
                 console.log( data )
                 if (data.state == 1) { //用php返回的数据成功
-                
+                  console.log('>>>>>>>')
                   if (data.student_id != null) {
+                    console.log('>>>>>>> student_id != NULL')
                     app.globalData.student_id = res.data.student_id;
                     wx.navigateTo({  //页面跳转
                       url: '../class_list/class_list',

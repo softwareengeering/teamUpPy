@@ -37,15 +37,16 @@ def test():
     if userList != []:
         print ( 'NotNone')
         resJson['student_id'] = userList[0]['sno']
+        resJson['state'] = 1
     else:
         print('None')
         newUser = Users(id=str(10000+ get_rand()), name = '新同学', openId=data['open_id'] , Sno = '1000000')
         db.session.add(newUser)
         db.session.commit()
         print ('添加成功')
-    resJson['state'] = 1
-    resJson['student_id'] = None
-    resJson['info'] = 'Nothing'
+        resJson['student_id'] = None
+        resJson['state'] = 0
+    resJson['info'] = 'success'
     return jsonify(resJson)
 
 
@@ -53,31 +54,43 @@ def test():
 def register():
     print( 'in register ....')
     data = to_Data()
-    Userres = Users.query.filter_by(openId=data['open_id']).all()
-    userList = []
-    print (Userres)
-    for x in Userres:
-        userTmp = {}
-        userTmp.id =x.id
-        userTmp.name = x.name
-        userTmp.openId = x.openId
-        userTmp.sno = x.sno
-        userList.append(userTmp)
-    print (userList)
+    OK = Users.query.filter_by(openId =data['open_id']).update({'name':data['student_name'], 'sno':data['student_id'] })
     resJson = {}
-    if userList != []:
-        print ( 'NotNone')
-        resJson['student_id'] = userList[0]['sno']
-    else:
-        print('None')
-        newUser = Users(id=str(10000+ get_rand()), name = '新同学', openId=data['open_id'] , Sno = '1000000')
-        db.session.add(newUser)
+    if OK:
         db.session.commit()
-        print ('添加成功')
-    resJson['state'] = 1
-    resJson['student_id'] = None
-    resJson['info'] = 'Nothing'
+        resJson['state'] = 1
+    else:
+        resJson['state'] = 0
+
     return jsonify(resJson)
+
+    # Userres = Users.query.filter_by(openId=data['open_id']).all()
+    # userList = []
+    # print (Userres)
+    # for x in Userres:
+    #     userTmp = {}
+    #     userTmp['id'] =x.id
+    #     userTmp['name'] = x.name
+    #     userTmp['openId'] = x.openId
+    #     userTmp['sno'] = x.sno
+    #     userList.append(userTmp)
+    # print (userList)
+    # resJson = {}
+    # if userList != []:
+    #     print ( '>>>>>>>>>>modify messages')
+    #     resJson['student_id'] = userList[0]['sno']
+    #     OK = Users.query.filter_by(name="python").update({"name": , "email": "python@itcast.cn"})
+    #
+    # else:
+    #     print('None')
+    #     newUser = Users(id=str(10000+ get_rand()), name = '新同学', openId=data['open_id'] , Sno = '1000000')
+    #     db.session.add(newUser)
+    #     db.session.commit()
+    #     print ('添加成功')
+    # resJson['state'] = 1
+    # resJson['student_id'] = None
+    # resJson['info'] = 'Nothing'
+    # return jsonify(resJson)
 
 @app.route('/classList', methods=['POST','GET'])
 def classList():
