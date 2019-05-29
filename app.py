@@ -14,39 +14,11 @@ CORS(app, supports_credentials = True) # 解决跨域问题
 app.config.from_object(config)
 db.init_app(app)
 
-
 url = "http://127.0.0.1:5000/"
 @app.before_first_request
 def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
-
-@app.route('/class_create', methods=['POST', 'GET'])
-def class_create():
-    #get:
-    # 'class_id'
-    # 'class_name'
-    # 'class_teacher'
-    # 'class_size'
-    # 'class_intro'
-    # 'class_creater'
-    ## password
-    # return:
-    # state, info, max class num, creater id,
-
-    print('in class_create')
-    data = to_Data()
-    newClass = Class(id=data['class_id'], name=data['calss_name'], teacher=data['class_teacher'],
-                     size=data['class_size'], intro=data['class_intro'], creater=['class_creater'],
-                     pwd=data['password'])
-    db.session.add(newClass)
-    db.session.commit()
-    print('添加成功')
-    resJson = {}
-    resJson['state'] = 1
-    resJson['info'] = '班级创建创建成功！'
-
-
 
 # "http://127.0.0.1:5000/test"
 @app.route('/login',methods=['POST','GET'])

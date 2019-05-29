@@ -20,7 +20,7 @@ Page({
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {

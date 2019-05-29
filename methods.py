@@ -1,4 +1,4 @@
-from flask import *
+from flask import request
 import json, re, datetime, random, os
 from models import Student, Project
 from werkzeug.utils import secure_filename
