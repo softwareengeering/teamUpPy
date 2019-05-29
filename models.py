@@ -40,14 +40,22 @@ class Class(db.Model):
     '''
     id（可做邀请码）
     名称
-    队伍人数上限
-    管理密码
+    #队伍人数上限
+    #管理密码
+    简介
+    老师
+    班级人数
+    创建者
     '''
     __tablename__ = 'class'
     id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
     name = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
-    limit = db.Column(db.Integer)
+    #limit = db.Column(db.Integer)
     pwd = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
+    intro = db.Column(db.String(511,'utf8_general_ci'),nullable=True)
+    teacher = db.Column(db.String(255,'utf8_general_ci'),nullable=True)
+    size = db.Column(db.Integer, nullable=True)
+    creater = db.Column(db.String(255,'utf8_general_ci'), nullable=False)
 
 class Team(db.Model):
     '''
