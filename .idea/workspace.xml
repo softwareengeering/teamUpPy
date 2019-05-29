@@ -59,6 +59,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -92,6 +93,9 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="e0bbff5f-1260-4be1-9702-e2772bc63aa9" name="Default Changelist" comment="" />
@@ -99,12 +103,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1559124424214</updated>
-      <workItem from="1559124496206" duration="232000" />
+      <workItem from="1559124496206" duration="518000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="232000" />
+    <option name="totallyTimeSpent" value="518000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
