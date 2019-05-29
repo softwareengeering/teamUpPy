@@ -15,7 +15,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.7.0",
 	"appid": "wx03fd479f09d68fba",
-	"projectname": "teamteam",
+	"projectname": "webPages",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
