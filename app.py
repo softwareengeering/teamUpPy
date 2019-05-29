@@ -10,7 +10,7 @@ CORS(app, supports_credentials = True) # 解决跨域问题
 
 app.config.from_object(config)
 db.init_app(app)
-
+#fjdfjskd
 url = "http://127.0.0.1:5000/"
 @app.before_first_request
 def init_db():
