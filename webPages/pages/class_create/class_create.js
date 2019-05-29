@@ -9,7 +9,7 @@ Page({
   formSubmit: function (e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value)
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/create_class2 ',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': this.data.class_id,
         'class_name': e.detail.value.class_name,
@@ -20,7 +20,7 @@ Page({
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
@@ -41,13 +41,13 @@ Page({
    */
   onLoad: function (options) {
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/create_class1',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': this.data.student_id,
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
