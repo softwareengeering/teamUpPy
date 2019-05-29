@@ -4,10 +4,7 @@ from exts import db
 import config, os
 from methods import get_rand, get_Info, to_Data, to_List, to_Json, new_avatar_name, create_xlsx
 from flask_cors import *
-# 123test
-# 123test
-# 123test
-# 123test
+
 app = Flask(__name__)
 CORS(app, supports_credentials = True) # 解决跨域问题
 
