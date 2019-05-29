@@ -3,6 +3,8 @@ import json, re, datetime, random, os
 from models import Student, Project
 from werkzeug.utils import secure_filename
 import xlwt # 向excel表格写数据的库
+import random
+
 
 def classList():
     # data = to_Data()
@@ -89,11 +91,14 @@ def get_Info(sname = None, group = None, grade = None, input = None):
             info = []
     return info
 
+def get_rand():
+    return int(random.random()*100)
+
 def to_Data():
     data = request.get_json()  # 获取前端数据
     print(data)
     # data = str(data, 'utf-8')  # 转utf-8
-    print(data['session_key'], '2')
+    # print(data['session_key'], '2')
     # data = json.loads(request.json)  # json转字典
     if data:
         return data
