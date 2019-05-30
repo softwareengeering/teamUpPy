@@ -33,7 +33,7 @@ Page({
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出原因的info返回，比如邀请码错误。
         if (res.data.state == 1) {
           app.globalData.student_id = res.data.student_id;  //更新全局变量中的class_id
-          wx.navigateTo({ //跳转到我的资料页
+          wx.switchTab({ //跳转到我的资料页
             url: '../myindex/myindex',
           });
         } else {

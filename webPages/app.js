@@ -1,8 +1,6 @@
 //app.js
-//test
 App({
   globalData:{
-    last_class_id: 2,  //数据库中最后一个班的id
     team_id: 1,
     student_id: 1,
     apply_msg_id: 1,

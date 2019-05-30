@@ -11,7 +11,7 @@
     </view>
     <view class='basic_2'>
       <text class='basic_text_2'>课程教师：</text><input name="class_teacher" type="text" placeholder="XXX" class="join_input_2" />
-      <text class='basic_text_2'>班级人数：</text><input name="class_size" type="number" placeholder="XX" class="join_input_2"/>
+      <text class='basic_text_2'>每队人数：</text><input name="team_size" type="number" placeholder="XX" class="join_input_2"/>
     </view>
     <text class='basic_text_3'>课程简介/要求：</text><input name="class_intro" type="text" placeholder="XX" class="join_input_3"/>
   </view>
