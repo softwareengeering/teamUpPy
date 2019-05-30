@@ -8,7 +8,6 @@ App({
     Base_url: 'http://127.0.0.1:5000',
     OPEN_ID : '',
     user_name: '',
-    user_id : ''
   },
 
   onLaunch: function () {
