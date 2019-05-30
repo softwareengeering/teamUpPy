@@ -95,7 +95,9 @@ def showJoinRequest():
 
             mesearch=Users.query.filter_by(id=x.applicant_id).all()
             returnTmp['me']=mesearch[0].name
-            returnTmp['read']=x.request_state
+            #returnTmp['read']=x.request_state
+            returnTmp['read']=True
+            returnTmp['time'] = '2019-05-20 13:17'
             returnList.append(returnTmp)
         print(returnList)
 
@@ -103,6 +105,7 @@ def showJoinRequest():
         resJson['apply_data']=returnList
         resJson['info']='success'
         resJson['state']=1
+
         print(resJson)
         return jsonify(resJson)
     else:#如果该学生只是一个普通成员
@@ -134,7 +137,7 @@ def getUserInfo():
 
     for x in Userres:
         userTmp = {}
-        userTmp['student_info'] = {'':  , '':  }
+       # userTmp['student_info'] = {'':  , '':  }
     print(userList)
     resJson = {}
     if userList != []:
@@ -143,7 +146,7 @@ def getUserInfo():
     else:
         resJson['state'] = 0
 
-    return jsonify(resJson)
+    # return jsonify(resJson)
 
 @app.route('/classList', methods=['POST','GET'])
 def classList():
