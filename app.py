@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, make_response, send_file ,jsonify
-from models import Admin, Student, Project, Users , Team , Class , ClassHasStu
+from models import Admin, Student, Project, Users , Team , Class , ClassHasStu,InviteRequest,JoinRequest
 from exts import db
 import config, os
 from methods import get_rand, get_Info, to_Data, to_List, to_Json, new_avatar_name, create_xlsx
@@ -49,6 +49,37 @@ def test():
     resJson['info'] = 'success'
     return jsonify(resJson)
 
+
+# "http://127.0.0.1:5000/showJoinRequest"
+@app.route('/showJoinRequest',methods=['POST','GET'])
+def showJoinRequest():
+    print( 'in showJoinRequest ....')
+    data=to_Data()
+    print(data['student_id'])
+    teamres=Team.query.filter_by(cap=data['student_id']).all()#找到以id为student_id的学生为队长的队伍
+    teamList = []
+    for x in teamres:
+        teamTmp = {}
+        teamTmp['id']=x.id
+        teamList.append(teamTmp)
+    resJson = {}
+    if teamList != []:#如果teamList不为空就在joinRequest表中查找加入该队伍的请求
+        print('this student is a captain')
+        print(teamList[0]['id'])
+        requestres=JoinRequest.query.filter_by(team_id=teamList[0]['id']).all()
+        requestList=[]
+        for x in requestres:
+            requestTmp={}
+            requestTmp['join_request_id']=x.join_request_id
+            requestTmp['applicant_id']=x.applicant_id
+            requestTmp['team_id']=x.team_id
+            requestTmp['request_state']=x.request_state
+            requestList.append(requestTmp)       #还需要（队长的名字）、当前队伍成员、申请者姓名
+        print(requestList)
+    else:#如果该学生只是一个普通成员
+      #teamres = Team.query.filter_by(cap=data['student_id']).all()
+      print('find nothing')
+    return ("1")
 
 @app.route('/register',methods=['POST','GET'])
 def register():

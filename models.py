@@ -79,3 +79,29 @@ class ClassHasStu(db.Model):
     class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
     user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.id'))
     team_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('team.id'))
+
+class JoinRequest(db.Model):
+    ''''
+     message id
+     申请者id
+     申请加入的队伍id
+     请求状况（是否通过）
+    '''
+    __tablename__='join_request'
+    join_request_id=db.Column(db.String(255,'utf8_general_ci'),primary_key=True)
+    applicant_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
+    team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    request_state = db.Column(db.Integer,default=0)
+
+class InviteRequest(db.Model):
+    '''
+      message id
+      邀请队伍id
+      被邀请者id
+      请求状况（是否通过）
+    '''
+    _tablename__ = 'invite_request'
+    invite_request_id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True)
+    team_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('team.id'))
+    guest_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('users.id'))
+    request_state = db.Column(db.Integer, default=0)
