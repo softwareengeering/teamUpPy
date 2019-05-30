@@ -39,7 +39,7 @@ Page({
               session_key: res.data.session_key
             })
             wx.request({  //将openID等数据传回后台
-              url: 'http://127.0.0.1:5000/login',//在这里加上后台的php地址
+              url: app.globalData.Base_url + '/login',//在这里加上后台的php地址
               data: { //发送给后台的数据
                 'open_id': OPEN_ID,
                 'session_key': SESSION_KEY
@@ -59,7 +59,7 @@ Page({
                   if (data.student_id != null) {
                     console.log('>>>>>>> student_id != NULL')
                     app.globalData.student_id = res.data.student_id;
-                    wx.navigateTo({  //页面跳转
+                    wx.switchTab({  //页面跳转
                       url: '../class_list/class_list',
                     });
                   } else {

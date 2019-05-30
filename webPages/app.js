@@ -1,12 +1,11 @@
 //app.js
 App({
   globalData:{
-    last_class_id: 2,  //数据库中最后一个班的id
     team_id: 1,
     student_id: 1,
     apply_msg_id: 1,
     invite_msg_id: 1,
-    Base_Url : '127.0.0.1:5000',
+    Base_url: 'http://127.0.0.1:5000',
     OPEN_ID : ''
   },
 
