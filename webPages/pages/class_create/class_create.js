@@ -24,6 +24,7 @@ Page({
         'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
+        console.log(res.data.info + "res info")
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
             title: res.data.info
@@ -61,6 +62,7 @@ Page({
         }
       }
     })
+    
   },
 
   /**

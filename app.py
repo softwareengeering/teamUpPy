@@ -48,6 +48,7 @@ def class_create2():
     else:
         resJson['state'] = 0
         resJson['info'] = '班级创建失败。'
+
     return jsonify(resJson)
 
 
@@ -55,16 +56,26 @@ def class_create2():
 def class_create1():
     #get: OPEN_ID of creater,
     #return : max num of classes
+    print('>>>>>in class create 1')
     resJson = {}
     maxId = db.session.query(func.max(Class.id)).one()
+    flag = 0
     if maxId != None:
+        print('>>>maxID exist')
         resJson['class_last_id'] = int(maxId)
         resJson['state'] = 1
-        resJson['info'] = '成功！'
+        resJson['info'] = str('成功！')
+        flag = 1
     else:
+        print('>>>maxID not exist')
         resJson['class_last_id'] = 0
         resJson['state'] = 1
-        resJson['info'] = '成功！'
+        resJson['info'] = str('成功！')
+        flag = 1
+    if flag == 0:
+        resJson['state'] = 0
+        resJson['info'] = str('遇到了问题嗷嗷')
+
     return jsonify(resJson)
 
 
