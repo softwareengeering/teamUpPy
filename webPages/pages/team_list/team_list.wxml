@@ -3,6 +3,7 @@
 <view class="head">
   <view class="class_name">
     <text>{{class_info.id}}：{{class_info.name}}</text>
+    <image src='../../image/my/set.jpg'></image>
   </view>
   <view class="intro">
     <image src="../../image/team_list/team.jpg"/>

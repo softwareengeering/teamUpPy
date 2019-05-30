@@ -14,7 +14,11 @@
       <text class='basic_text_2'>每队人数：</text><input name="team_size" type="number" placeholder="XX" class="join_input_2"/>
     </view>
     <text class='basic_text_3'>课程简介/要求：</text><input name="class_intro" type="text" placeholder="XX" class="join_input_3"/>
+    <view class = 'class_pw'>
+      <text class='basic_text_2'>班级管理密码：</text><input name='class_pw' type="text" placeholder="XX" class="join_input"/>
+    </view>
   </view>
+
   <button formType="submit" type="default">完成</button>
 </form>
 </view>

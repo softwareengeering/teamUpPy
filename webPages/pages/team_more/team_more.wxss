@@ -20,8 +20,13 @@
   font-size: 30rpx;
   width:670rpx;
   color: #444;
+  display: flex;
 }
-
+.intro image{
+  width:45rpx;
+  height:50rpx;
+  margin-left: 480rpx;
+}
 .invite{
   margin-top: 40rpx;
   margin-left: 10rpx;
