@@ -4,6 +4,7 @@ from exts import db
 import config, os
 from methods import get_rand, get_Info, to_Data, to_List, to_Json, new_avatar_name, create_xlsx
 from flask_cors import *
+from sqlalchemy import func
 
 app = Flask(__name__)
 CORS(app, supports_credentials = True) # 解决跨域问题
@@ -19,12 +20,12 @@ def init_db():
     db.create_all()
 
 @app.route('/class_create2', methods=['POST', 'GET'])
-def class_create():
+def class_create2():
     #get:
     # 'class_id'
     # 'class_name'
     # 'class_teacher'
-    # 'class_size'
+    # 'team_size'
     # 'class_intro'
     # 'class_creater'
     ## password
@@ -34,18 +35,40 @@ def class_create():
     print('in class_create')
     data = to_Data()
     newClass = Class(id=data['class_id'], name=data['calss_name'], teacher=data['class_teacher'],
-                     size=data['class_size'], intro=data['class_intro'], creater=['class_creater'],
-                     pwd=data['password'])
+                     limit=data['team_size'], intro=data['class_intro'], creater=str(data['class_creater'])
+                     #,pwd=data['password']
+                     )
     db.session.add(newClass)
     db.session.commit()
-    print('添加成功')
     resJson = {}
-    resJson['state'] = 1
-    resJson['info'] = '班级创建创建成功！'
+    if newClass:
+        print('添加成功')
+        resJson['state'] = 1
+        resJson['info'] = '班级创建创建成功！'
+    else:
+        resJson['state'] = 0
+        resJson['info'] = '班级创建失败。'
+    return jsonify(resJson)
 
 
+@app.route('/class_create1', methods=['POST', 'GET'])
+def class_create1():
+    #get: OPEN_ID of creater,
+    #return : max num of classes
+    resJson = {}
+    maxId = db.session.query(func.max(Class.id)).one()
+    if maxId != None:
+        resJson['class_last_id'] = int(maxId)
+        resJson['state'] = 1
+        resJson['info'] = '成功！'
+    else:
+        resJson['class_last_id'] = 0
+        resJson['state'] = 1
+        resJson['info'] = '成功！'
+    return jsonify(resJson)
 
-# "http://127.0.0.1:5000/test"
+
+        # "http://127.0.0.1:5000/test"
 @app.route('/login',methods=['POST','GET'])
 def test():
     print( 'in login ....')
@@ -102,7 +125,7 @@ def getUserInfo():
 
     for x in Userres:
         userTmp = {}
-        userTmp['student_info'] = {'':  , '':  }
+        # userTmp['student_info'] = {'':  , '':  }
     print(userList)
     resJson = {}
     if userList != []:

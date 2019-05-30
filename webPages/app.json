@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/class_create/class_create",
     "pages/index/index",
     "pages/request_join_list/request_join_list",
     "pages/request_join_more/request_join_more",
@@ -13,7 +14,6 @@
     "pages/team_more/team_more",
     "pages/class_list/class_list",
     "pages/class_join/class_join",
-    "pages/class_create/class_create",
     "pages/logs/logs"
   ],
   "window": {
