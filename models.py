@@ -96,12 +96,14 @@ class JoinRequest(db.Model):
      message id
      申请者id
      申请加入的队伍id
+     是否已读（对队长而言）
      请求状况（是否通过）
     '''
     __tablename__='join_request'
     join_request_id=db.Column(db.String(255,'utf8_general_ci'),primary_key=True)
     applicant_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
     team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    request_read =db.Column(db.Integer,default=0)#0为未读
     request_state = db.Column(db.Integer,default=0)
 
 class InviteRequest(db.Model):

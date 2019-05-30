@@ -10,7 +10,7 @@ Page({
   },
   read_already: function (ifagree) {
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/setJoinRead',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
         'apply_msg_id': app.globalData.apply_msg_id,  //记得后台要将其标为已读
@@ -20,7 +20,7 @@ Page({
         'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、invite_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
-        if (res.data.state == 1) { //用php返回的数据更新页面数据
+        if (res.data.state == 1) { 
           wx.navigateTo({  //页面跳转
             url: '../request_join_list/request_join_list',
           })
@@ -36,8 +36,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that=this;
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/applicationResult',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'apply_msg_id': app.globalData.apply_msg_id,
       },
@@ -47,7 +48,8 @@ Page({
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、invite_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({ invite_data: res.data.invite_data })
+          console.log(res.data)
+          that.setData({ apply_data: res.data.invite_data })//??????????
         } else {
           wx.showToast({
             title: res.data.info
