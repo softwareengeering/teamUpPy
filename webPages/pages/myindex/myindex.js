@@ -14,13 +14,14 @@ Page({
    */
   onLoad: function (options) {
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/get_user_info',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
+        'open_id': app.globalData.OPEN_ID
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、student_info等，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
