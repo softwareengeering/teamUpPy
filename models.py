@@ -66,6 +66,17 @@ class Team(db.Model):
     full = db.Column(db.Integer)
     msg =  db.Column(db.String(255, 'utf8_general_ci'))
 
+class TeamHasStu(db.Model):
+    '''
+      班级id
+      队伍id
+      学生id
+    '''
+    __tablename__='team_has_stu'
+    id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
+    class_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('class.id'))
+    team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    user_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
 
 class ClassHasStu(db.Model):
     '''
