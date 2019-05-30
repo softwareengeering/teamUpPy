@@ -21,7 +21,7 @@ def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
 
-@app.route('/class_create1', methods=['POST', 'GET'])
+@app.route('/class_create2', methods=['POST', 'GET'])
 def class_create():
     #get:
     # 'class_id'
