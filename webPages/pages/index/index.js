@@ -59,7 +59,7 @@ Page({
                   if (data.student_id != null) {
                     console.log('>>>>>>> student_id != NULL')
                     app.globalData.student_id = res.data.student_id;
-                    wx.navigateTo({  //页面跳转
+                    wx.switchTab({  //页面跳转
                       url: '../class_list/class_list',
                     });
                   } else {
