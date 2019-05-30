@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/class_create/class_create",
     "pages/index/index",
+    "pages/class_create/class_create",
     "pages/request_join_list/request_join_list",
     "pages/request_join_more/request_join_more",
     "pages/request_more/request_more",

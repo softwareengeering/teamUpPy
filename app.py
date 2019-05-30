@@ -59,10 +59,11 @@ def class_create1():
     print('>>>>>in class create 1')
     resJson = {}
     maxId = db.session.query(func.max(Class.id)).one()
+    print( maxId[0])
     flag = 0
-    if maxId != None:
+    if maxId[0] != None:
         print('>>>maxID exist')
-        resJson['class_last_id'] = int(maxId)
+        resJson['class_last_id'] = int(maxId[0])
         resJson['state'] = 1
         resJson['info'] = str('成功！')
         flag = 1
