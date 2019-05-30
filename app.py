@@ -49,7 +49,6 @@ def test():
     resJson['info'] = 'success'
     return jsonify(resJson)
 
-
 @app.route('/register',methods=['POST','GET'])
 def register():
     print( 'in register ....')
@@ -71,19 +70,21 @@ def getUserInfo():
     data = to_Data()
     Userres = Users.query.filter_by(openId=data['open_id']).all()
     userList = []
-
+    userTmp = {}
     for x in Userres:
-        userTmp = {}
-        userTmp['student_info'] = {'':  , '':  }
+        userTmp['student_info'] = {'name':x.name , 'id':x.sno  }
+        userList.append(userTmp)
     print(userList)
     resJson = {}
-    if userList != []:
-
+    if Userres != []:
+        resJson['student_info'] = userTmp['student_info']
         resJson['state'] = 1
     else:
         resJson['state'] = 0
 
+    print ( resJson)
     return jsonify(resJson)
+
 
 @app.route('/classList', methods=['POST','GET'])
 def classList():
