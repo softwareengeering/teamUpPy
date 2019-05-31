@@ -28,23 +28,45 @@ def class_create2():
     # 'team_size'
     # 'class_intro'
     # 'class_creater'
-    ## password
+    # 'clss_pwd'
     # return:
-    # state, info, max class num, creater id,
+    # state, info, creater id(string),
 
     print('>>>>>in class_create2')
     data = to_Data()
-    newClass = Class(id=data['class_id'], name=data['calss_name'], teacher=data['class_teacher'],
+    resJson = {}
+    if data['class_pwd'] == None :
+        print("pwd is None")
+        resJson['state'] = 0
+        resJson['info'] = "密码不能为空，请输入密码！"
+        return jsonify(resJson)
+    if data['limit'] == None :
+        print("limit is None")
+        resJson['state'] = 0
+        resJson['info'] = "每队上限不能为空，请输入每队上限！"
+        return jsonify(resJson)
+    if isinstance(data['limit'],int):
+        print("limit is not num")
+        resJson['state'] = 0
+        resJson['info'] = "每队上限必须为数字，请重新输入！"
+        return jsonify(resJson)
+    if data['name'] == None :
+        print("name is None")
+        resJson['state'] = 0
+        resJson['info'] = "班级名字不能为空，请输入班级名字！"
+        return jsonify(resJson)
+
+    newClass = Class(id=data['class_id'], name=data['class_name'], teacher=data['class_teacher'],
                      limit=data['team_size'], intro=data['class_intro'], creater=str(data['class_creater'])
-                     #,pwd=data['password']
+                     ,pwd=data['class_pwd']
                      )
     db.session.add(newClass)
     db.session.commit()
-    resJson = {}
     if newClass:
         print('添加成功')
         resJson['state'] = 1
         resJson['info'] = '班级创建创建成功！'
+        resJson['createrId'] = str(data['class_creater'])
     else:
         resJson['state'] = 0
         resJson['info'] = '班级创建失败。'

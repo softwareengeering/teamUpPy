@@ -17,6 +17,7 @@ Page({
         'class_teacher': e.detail.value.class_teacher,
         'team_size': e.detail.value.team_size,
         'class_intro': e.detail.value.class_intro,
+        'class_pwd': e.detail.value.class_pw,
         'class_creater': app.globalData.OPEN_ID //班级创建人信息
       },
       method: 'POST',
