@@ -6,11 +6,17 @@
 }
 
 .class_name{
+  display: flex;
   font-size: 40rpx;
   font-weight: bold;
   width:750rpx;
   margin-left: 30rpx;
   color: #333;
+}
+.class_name image{
+  width:55rpx;
+  height:60rpx;
+  margin-left: 140rpx; 
 }
 
 .intro{
@@ -106,7 +112,7 @@
 
 .team image{
   width: 60rpx;
-  height: 60rpx;
+  height: 58rpx;
   float: right;
   margin-right: 10rpx;
   margin-top: 10rpx;
