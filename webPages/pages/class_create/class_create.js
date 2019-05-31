@@ -55,7 +55,7 @@ Page({
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
-          this.setData({class_id: res.data.class_last_id+1})
+          that.setData({class_id: res.data.class_last_id+1})
         } else {
           wx.showToast({
             title: res.data.info

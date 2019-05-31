@@ -5,8 +5,10 @@ App({
     student_id: 1,
     apply_msg_id: 1,
     invite_msg_id: 1,
-    Base_Url : '127.0.0.1:5000',
-    OPEN_ID : ''
+    Base_url: 'http://127.0.0.1:5000',
+    OPEN_ID : '',
+    user_name: '',
+    user_id : ''
   },
 
   onLaunch: function () {

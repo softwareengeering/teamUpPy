@@ -13,18 +13,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/get_user_info',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
+        'open_id': app.globalData.OPEN_ID
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、student_info等，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
+        console.log('>>>>>>>>>> myindex success')
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({ user: res.data.student_info})
+          console.log(res.data.student_info)
+          that.setData({ user: res.data.student_info})
+          app.globalData.user_name = res.data.student_info.name
+          app.globalData.user_id = res.data.student_info.id
         } else {
           wx.showToast({
             title: res.data.info
