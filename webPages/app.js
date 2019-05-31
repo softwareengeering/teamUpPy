@@ -1,5 +1,4 @@
 //app.js
-//test
 App({
   globalData:{
     team_id: 1,

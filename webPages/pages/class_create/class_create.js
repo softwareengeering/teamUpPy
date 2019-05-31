@@ -16,7 +16,8 @@ Page({
         'class_teacher': e.detail.value.class_teacher,
         'team_size': e.detail.value.team_size,
         'class_intro': e.detail.value.class_intro,
-        'class_creater': app.globalData.student_id //班级创建人信息
+        'class_creater': app.globalData.student_id, //班级创建人信息
+        'class_password':e.detail.value.class_password  //班级管理密码
       },
       method: 'POST',
       header: {
@@ -25,11 +26,14 @@ Page({
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
-            title: res.data.info
+            title: "班级创建成功"
           });
+          wx.navigateTo({
+            url: '../class_list/class_list',
+          })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级创建失败"
           });
         }
       }
