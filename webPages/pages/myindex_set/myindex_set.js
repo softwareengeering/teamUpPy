@@ -38,7 +38,10 @@ Page({
           });
         } else {
           wx.showToast({  //弹窗提醒邀请码错误
-            title: res.data.info
+            title: "邀请码错误",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -64,7 +67,10 @@ Page({
           this.setData({ user: res.data.student_info })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "我的信息加载失败",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
         }
       }

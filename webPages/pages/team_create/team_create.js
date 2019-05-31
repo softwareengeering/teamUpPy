@@ -17,7 +17,7 @@ Page({
     console.log('选中的有：',e.detail.value);
     this.data.invitors=e.detail.value
   },
-
+  //提交表单
   formSubmit: function (e) {
     if(e.detail.value.leader_name==''){ //队长默认为创建人
       e.detail.value.leader_name=this.data.leader_name
@@ -39,11 +39,17 @@ Page({
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
-            title: res.data.info
+            title: "队伍创建成功",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "队伍创建失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -69,7 +75,10 @@ Page({
           this.setData({ class_info: res.data.class_info, team: res.data.team, leader_name: res.data.leader_name}) //setData函数只能更新一整个类，无法单独更新数组和整个类的儿子
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "页面信息初始化失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

@@ -69,7 +69,10 @@ Page({
                   }
                 } else {
                   wx.showToast({
-                    title: data.info
+                    title: "登录失败",
+                    duration: 2000,
+                    mask: true,
+                    icon: 'loading'
                   });
                 }
               }

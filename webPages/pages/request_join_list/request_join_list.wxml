@@ -15,5 +15,7 @@
     </view> 
     <view class='invite_time'>{{item.time}}</view>
   </view>
- 
+  <view class="set">
+    <button bindtap='manage'>管理</button>
+  </view>
 </view>

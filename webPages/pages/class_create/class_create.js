@@ -26,14 +26,20 @@ Page({
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
-            title: "班级创建成功"
+            title: "班级创建成功",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
           wx.navigateTo({
             url: '../class_list/class_list',
           })
         } else {
           wx.showToast({
-            title: "班级创建失败"
+            title: "班级创建失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -47,7 +53,7 @@ Page({
     wx.request({
       url: 'http://127.0.0.1:5000/create_class1',//在这里加上后台的php地址
       data: { //发送给后台的数据
-        'student_id': this.data.student_id,
+        'student_id': app.globalData.student_id,
       },
       method: 'POST',
       header: {
@@ -58,7 +64,10 @@ Page({
           that.setData({class_id: res.data.class_last_id+1})
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级列表信息获取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

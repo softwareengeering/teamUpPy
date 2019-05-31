@@ -16,6 +16,12 @@ Page({
       url: '../team_more/team_more',
     })
   },
+  //管理班级信息页面的跳转
+  navi: function(e){
+    wx.navigateTo({
+      url: '../class_password/class_password',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -34,7 +40,10 @@ Page({
           this.setData({ class_info:res.data.class_info, teams:res.data.teams })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级队伍信息加载失败",
+            duration: 2000,
+            mask:true,
+            icon: 'loading'
           });
         }
       }

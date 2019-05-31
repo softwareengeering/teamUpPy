@@ -50,6 +50,10 @@
   border-radius: 6rpx;
 }
 
+.clear{
+  clear:both;
+}
+
 .join{
   width:150rpx;
   height: 60rpx;
@@ -57,8 +61,9 @@
   background-color: #f19d38;
   line-height: 60rpx;
   margin-top: 50rpx;
-  margin-right: 10rpx;
+  margin-left: 60rpx;
   color: #ffffff;
+  float: left;
 }
 
 input{

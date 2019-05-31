@@ -2,9 +2,6 @@
 var app=getApp();
 
 Page({
-  /**
-   * 页面的初始数据我再尝试一下修改
-   */
   data: {
     user: {name:'啊啊啊', id:'2016aaaaaa', fname:'啊'},
     class_data: [{ id: 1, name: "算法", teacher: "刘青", student_numbers: 56, team_numbers: 5 }, { id: 2, name: "软件工程", teacher: "刘青", student_numbers: 72,team_numbers: 9 }],
@@ -59,7 +56,10 @@ Page({
           this.setData({user:res.data.student_info, class_data:res.data.classes})
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级信息获取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

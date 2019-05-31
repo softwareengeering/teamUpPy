@@ -3,7 +3,7 @@
   <view class="no_use"></view>
   <form>
   <view class="intro">
-    <text class="id">ID：</text><input name='team_id' type="text" placeholder="{{team.id}}" class="join_input"/>
+    <text class="id">ID：{{team.id}}</text>
   </view>
   <view class="intro">
     <text class="mem_sup">人数：</text><input name='team_sup' type="text" placeholder="{{team.count}}/{{team.sup}}" class="join_input"/>
@@ -17,7 +17,7 @@
     <input name='team_info' type="text" placeholder="{{team.info}}" class="join_input"/>
   </view>
   <view class="invite">
-    <text class="title">成员名单</text>
+    <text class="title">成员名单(只有选中的小伙伴才会被留下哦)</text>
     <checkbox-group class="member_list">
       <label class="member" wx:for="{{team.member}}" wx:for-item="member_name">
         <checkbox>
@@ -34,6 +34,9 @@
     
     
   </view>
-  <button class="join" bindtap='join_team'>修改</button>
+  <button class="join" form-type='submit'>修改</button>
+  <button class="join" bindtap='delete_team'>删除</button>
+  <button class="join" bindtap='go_back'>返回</button>
+  <view class='clear'></view>
   </form>
 </view>

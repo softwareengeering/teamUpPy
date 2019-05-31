@@ -43,7 +43,7 @@
 .page_m{
   background-color: white;
   margin-top:100rpx;
-  height:804rpx;
+  height:824rpx;
   width:680rpx;
   margin-left:35rpx;
   border-radius: 10rpx;
@@ -107,6 +107,7 @@
 }
 .class_pw{
   display: flex;
+  margin-left: 12rpx;
 }
 .set_button{
   background-color: #f19d38;

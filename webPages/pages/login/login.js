@@ -26,7 +26,10 @@ Page({
           });
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "用户名或密码错误",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

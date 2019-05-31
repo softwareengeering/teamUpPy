@@ -24,7 +24,10 @@ Page({
           });
         } else {
           wx.showToast({  //弹窗提醒邀请码错误
-            title: res.data.info
+            title: "邀请码错误",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
