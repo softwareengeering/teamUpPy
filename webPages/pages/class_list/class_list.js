@@ -3,7 +3,7 @@ var app=getApp();
 
 Page({
   /**
-   * 页面的初始数据我先尝试一下修改
+   * 页面的初始数据我再尝试一下修改
    */
   data: {
     user: {name:'啊啊啊', id:'2016aaaaaa', fname:'啊'},
