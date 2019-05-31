@@ -1,6 +1,6 @@
 //index.js
 //获取应用实例
-const app = getApp()
+var app = getApp()
 const APP_ID = 'wx03fd479f09d68fba';//输入小程序appid  
 const APP_SECRET = 'b40c24002ba08d9fc5b55a40ecc6df38';//输入小程序app_secret  
 var OPEN_ID = '' //储存获取到openid  
