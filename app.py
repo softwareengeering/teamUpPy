@@ -32,7 +32,7 @@ def class_create2():
     # return:
     # state, info, max class num, creater id,
 
-    print('in class_create')
+    print('>>>>>in class_create2')
     data = to_Data()
     newClass = Class(id=data['class_id'], name=data['calss_name'], teacher=data['class_teacher'],
                      limit=data['team_size'], intro=data['class_intro'], creater=str(data['class_creater'])
