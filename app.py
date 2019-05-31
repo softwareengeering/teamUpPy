@@ -62,42 +62,36 @@ def showJoinRequest():
         teamTmp['id']=x.id
         teamList.append(teamTmp)
     resJson = {}
-    if teamList != []:#如果teamList不为空就在joinRequest表中查找加入该队伍的请求
+    if teamList != []:#如果teamList不为空就在joinRequest表中查找加入该学生队伍的请求
         print('this student is a captain')
         print(teamList[0]['id'])
-        requestres=JoinRequest.query.filter_by(team_id=teamList[0]['id']).all()
-        # requestList=[]
-        # for x in requestres:
-        #     requestTmp={}
-        #     requestTmp['join_request_id']=x.join_request_id
-        #     requestTmp['applicant_id']=x.applicant_id
-        #     requestTmp['team_id']=x.team_id
-        #     requestTmp['request_state']=x.request_state
-        #     requestList.append(requestTmp)       #还需要（队长的名字）、当前队伍成员、申请者姓名
-        # print(requestList)
+        for i in range(0,len(teamList)):
+            requestres=JoinRequest.query.filter_by(team_id=teamList[i]['id']).all()#找到以该学生为队长的第i个队伍收到的申请
+            returnList=[]
+            for x in requestres:#对于队伍i收到的每条申请
+                returnTmp={}
+                returnTmp['id']=x.join_request_id
+                getcap=Team.query.filter_by(id=x.team_id).all()#在队伍表中找到队伍的队长id
+                capsearch=Users.query.filter_by(id=getcap[0].id).all()#在用户表中找到队长的名字
+                returnTmp['cap']=capsearch[0].name
+                if getcap[0].id==data['student_id']:
+                    returnTmp['cap']='me'
+                returnTmp['team_id']=x.team_id#队伍id
 
-        returnList=[]
-        for x in requestres:
-            returnTmp={}
-            returnTmp['id']=x.join_request_id
-            getcap=Team.query.filter_by(id=x.team_id).all()#在队伍表中找到队伍的队长id
-            capsearch=Users.query.filter_by(id=getcap[0].id).all()#在用户表中找到队长的名字
-            returnTmp['cap']=capsearch[0].name
-            returnTmp['team_id']=x.team_id
+                member=[]
+                membersearch=TeamHasStu.query.filter_by(team_id=x.team_id).all()#在用户-队伍表中找到所有的对应关系
+                for y in membersearch:#找到队伍中所有成员的名字
+                    usersearch=Users.query.filter_by(id=y.user_id).all()
+                    member.append(usersearch[0].name)
+                returnTmp['memeber']=member
 
-            member=[]
-            membersearch=TeamHasStu.query.filter_by(team_id=x.team_id).all()#在用户-队伍表中找到所有的对应关系
-            for y in membersearch:#找到队伍中所有成员的名字
-                usersearch=Users.query.filter_by(id=y.user_id).all()
-                member.append(usersearch[0].name)
-            returnTmp['memeber']=member
-
-            mesearch=Users.query.filter_by(id=x.applicant_id).all()
-            returnTmp['me']=mesearch[0].name
+                mesearch=Users.query.filter_by(id=x.applicant_id).all()#找到申请人的名字
+                returnTmp['me']=mesearch[0].name
             #returnTmp['read']=x.request_state
-            returnTmp['read']=True
-            returnTmp['time'] = '2019-05-20 13:17'
-            returnList.append(returnTmp)
+                returnTmp['read']=True
+                returnTmp['time'] = '2019-05-20 13:17'
+                returnList.append(returnTmp)
+
         print(returnList)
 
         resJson={}
@@ -112,10 +106,10 @@ def showJoinRequest():
       print('find nothing')
       return ("1")
 
-# "http://127.0.0.1:5000/applicationResult"
-@app.route('/applicationResult',methods=['POST','GET'])
-def applicationResult():
-    print( 'in applicationResult ....')
+# "http://127.0.0.1:5000/applicationHanadle"
+@app.route('/applicationHanadle',methods=['POST','GET'])
+def applicationHanadle():
+    print( 'in applicationHanadle ....')
     data = to_Data()
     print(data['apply_msg_id'])
     requestsearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()  # 在表中找到这一条申请

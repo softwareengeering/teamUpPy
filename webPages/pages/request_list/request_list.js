@@ -11,6 +11,7 @@ Page({
 
   read_more: function(e){
     app.globalData.invite_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
+ //   console.log(data.invite_data)
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
     wx.navigateTo({  //页面跳转
       url: '../request_more/request_more',
@@ -32,8 +33,9 @@ Page({
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、invite_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-        console.log(res.data)
+          console.log(res.data)
           that.setData({ invite_data: res.data.invite_data })
+          console('seee',invite_data)
         } else {
           wx.showToast({
             title: res.data.info

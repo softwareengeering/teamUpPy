@@ -38,7 +38,7 @@ Page({
   onLoad: function (options) {
     var that=this;
     wx.request({
-      url: 'http://127.0.0.1:5000/applicationResult',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/applicationHandle',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'apply_msg_id': app.globalData.apply_msg_id,
       },
