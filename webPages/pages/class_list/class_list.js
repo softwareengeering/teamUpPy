@@ -45,6 +45,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {  //页面加载时向后台请求数据
+    console.log('>>>>>>', app.globalData.User_name)
+    this.setData({ 
+      user: { 
+        name : app.globalData.User_name , 
+        id: app.globalData.student_id,
+        fname: app.globalData.User_name(0)
+        }
+    })
+    this.user.id = app.globalData.student_id
     wx.request({
       url: ' ',//在这里加上后台的php地址
       data: { //发送给后台的数据
@@ -56,7 +65,7 @@ Page({
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、student_info、classes（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({user:res.data.student_info, class_data:res.data.classes})
+          this.setData({ class_data:res.data.classes})
         } else {
           wx.showToast({
             title: res.data.info

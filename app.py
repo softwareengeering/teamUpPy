@@ -36,6 +36,7 @@ def test():
     resJson = {}
     if userList != []:
         print ( 'NotNone')
+        resJson['user_name'] = userList[0]['name']
         resJson['student_id'] = userList[0]['sno']
         resJson['state'] = 1
     else:

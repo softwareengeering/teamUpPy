@@ -51,14 +51,15 @@ Page({
               },
               success: function (res) { //获取php的返回值res，res.data里面要有返回的数据信息，如果数据库中查到它还没有名字学号。那就跳转到login页面让它填写，如果有了，就跳转到它的列表页面，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
                 console.log(res);
-                console.log(res.data.state)
                 const data = JSON.parse(res.data)
                 console.log( data )
                 if (data.state == 1) { //用php返回的数据成功
                   console.log('>>>>>>>')
-                  if (data.student_id != null) {
+                  if (data.student_id != '1000000') {
                     console.log('>>>>>>> student_id != NULL')
-                    app.globalData.student_id = res.data.student_id;
+                    app.globalData.student_id = data.student_id;
+                    app.globalData.User_name = data.user_name
+                    console.log('>>>>>>', app.globalData.student_id, app.globalData.User_name )
                     wx.switchTab({  //页面跳转
                       url: '../class_list/class_list',
                     });
