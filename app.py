@@ -18,6 +18,7 @@ url = "http://127.0.0.1:5000/"
 def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
+    print ('create successful')
 
 @app.route('/class_create2', methods=['POST', 'GET'])
 def class_create2():
