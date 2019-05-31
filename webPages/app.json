@@ -2,19 +2,23 @@
   "pages": [
     "pages/index/index",
     "pages/class_create/class_create",
+
     "pages/request_join_list/request_join_list",
     "pages/request_join_more/request_join_more",
     "pages/request_more/request_more",
     "pages/request_list/request_list",
     "pages/myindex_set/myindex_set",  
-    "pages/myindex/myindex",
+    "pages/class_password/class_password",
     "pages/login/login",
     "pages/team_create/team_create",
-    "pages/team_list/team_list",
-    "pages/team_more/team_more",
+    
+    
     "pages/class_list/class_list",
     "pages/class_join/class_join",
     "pages/logs/logs"
+    
+    
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
