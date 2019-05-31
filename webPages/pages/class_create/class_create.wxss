@@ -43,8 +43,8 @@
 }
 .page_m{
   background-color: white;
-  margin-top:180rpx;
-  height: 820rpx;
+  margin-top:100rpx;
+  height: 830rpx;
   width:680rpx;
   margin-left:35rpx;
   border-radius: 10rpx;
@@ -105,4 +105,10 @@
   width:620rpx;
   height: 240rpx;
   border-radius: 5rpx;
+}
+.class_pw{
+  display: flex;
+}
+button{
+  margin-top: 30rpx;
 }

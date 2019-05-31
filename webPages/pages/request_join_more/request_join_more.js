@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    apply_data: { id: 1, cap: "队长", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", feedback: "同意" }
+    apply_data: { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name:"软工" }
   },
   read_already: function (ifagree) {
     wx.request({

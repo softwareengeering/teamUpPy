@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    user: { name: "张一一", id: "2016202239" }
+    user: { name: app.globalData.user_name, id: app.globalData.user_id  }
   },
 
   formSubmit: function (e) {
@@ -48,6 +48,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.data.user.name = app.globalData.user_name
+    this.data.user.id = app.globalData.user_id
     wx.request({
       url: ' ',//在这里加上后台的php地址
       data: { //发送给后台的数据

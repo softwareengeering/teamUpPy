@@ -49,7 +49,6 @@ def test():
     resJson['info'] = 'success'
     return jsonify(resJson)
 
-
 # "http://127.0.0.1:5000/showJoinRequest"
 @app.route('/showJoinRequest',methods=['POST','GET'])
 def showJoinRequest():
@@ -295,19 +294,24 @@ def getUserInfo():
     data = to_Data()
     Userres = Users.query.filter_by(openId=data['open_id']).all()
     userList = []
-
+    userTmp = {}
     for x in Userres:
-        userTmp = {}
-       # userTmp['student_info'] = {'':  , '':  }
+        userTmp['student_info'] = {'name':x.name , 'id':x.sno  }
+        userList.append(userTmp)
+
     print(userList)
     resJson = {}
-    if userList != []:
-
+    if Userres != []:
+        resJson['student_info'] = userTmp['student_info']
         resJson['state'] = 1
     else:
         resJson['state'] = 0
 
-    # return jsonify(resJson)
+
+    print ( resJson)
+    return jsonify(resJson)
+
+
 
 @app.route('/classList', methods=['POST','GET'])
 def classList():
