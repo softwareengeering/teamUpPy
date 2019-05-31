@@ -3,6 +3,7 @@
   <view class="no_use"></view>
   <view class="intro">
     <text class="id">ID：{{team.id}}</text>
+    <image src='../../image/my/set.jpg'></image>
   </view>
   <view class="intro">
     <text class="mem_sup">人数：{{team.count}}/{{team.sup}}</text>

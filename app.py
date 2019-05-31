@@ -99,6 +99,7 @@ def test():
     resJson = {}
     if userList != []:
         print ( 'NotNone')
+        resJson['user_name'] = userList[0]['name']
         resJson['student_id'] = userList[0]['sno']
         resJson['state'] = 1
     else:
@@ -111,7 +112,6 @@ def test():
         resJson['state'] = 0
     resJson['info'] = 'success'
     return jsonify(resJson)
-
 
 @app.route('/register',methods=['POST','GET'])
 def register():
@@ -134,18 +134,17 @@ def getUserInfo():
     data = to_Data()
     Userres = Users.query.filter_by(openId=data['open_id']).all()
     userList = []
-
+    userTmp = {}
     for x in Userres:
-        userTmp = {}
-        # userTmp['student_info'] = {'':  , '':  }
+        userTmp['student_info'] = {'name':x.name , 'id':x.sno  }
+        userList.append(userTmp)
     print(userList)
     resJson = {}
-    if userList != []:
-
+    if Userres != []:
+        resJson['student_info'] = userTmp['student_info']
         resJson['state'] = 1
     else:
         resJson['state'] = 0
-
     return jsonify(resJson)
 
 @app.route('/classList', methods=['POST','GET'])
@@ -159,6 +158,23 @@ def classList():
     }
     return jsonify(classListData)
 
+@app.route('/modifyName', methods=['POST','GET'])
+def modifyName():
+    print ( 'in modifing name')
+    data = to_Data()
+    print (data)
+
+    OK = Users.query.filter_by(openId =data['open_id']).update({'name':data['student_name'], 'sno':data['student_id'] })
+    resJson = {}
+    if OK:
+        db.session.commit()
+        resJson['state'] = 1
+        resJson['info'] = 'success'
+    else:
+        resJson['state'] = 0
+        resJson['info'] = 'sth wrong'
+
+    return jsonify(resJson)
 @app.route('/')
 def index():
     #return render_template('index.html')

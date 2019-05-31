@@ -1,0 +1,28 @@
+<view class='this_page'>
+  <view class='head'>
+    <view class='title_1'>入队邀请</view>
+    <navigator url = '../request_join_list/request_join_list'><view class='title_2'>加入申请</view></navigator>
+  </view>
+  <form>
+  <checkbox-group>
+  <label wx:for="{{invite_data}}" >
+    <checkbox >
+    <view class = 'request_box'>
+  
+    <view class='invite_head'><text class='a_text'>{{item.cap}} </text> <text class='head_text'>邀请 </text><text class='a_text'>{{item.me}} </text><text class='head_text'>加入 队伍：</text><text class='a_text'>{{item.team_id}}</text>
+    </view>
+    <view class='invite_member'><text class='member_text'>当前队员为：</text><text wx:for="{{item.member}}" wx:for-item="i">{{i}} </text>
+    </view>
+    <view bindtap='read_more' data-msg_id="{{item.id}}">
+      <view wx:if="{{item.read == true}}"><image src="../../image/request_0.png"/></view>
+      <view wx:else ><image src="../../image/request_1.png"/></view>
+    </view>
+    <view class='invite_time'>{{item.time}}</view>    
+    </view>
+    </checkbox>
+  </label>
+  </checkbox-group>
+  <button class='button_delete'>删除已选</button>
+  </form>
+     
+</view>

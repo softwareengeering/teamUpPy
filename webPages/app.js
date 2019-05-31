@@ -6,7 +6,8 @@ App({
     apply_msg_id: 1,
     invite_msg_id: 1,
     Base_url: 'http://127.0.0.1:5000',
-    OPEN_ID : ''
+    OPEN_ID : '',
+    User_name: 'tmp',
   },
 
   onLaunch: function () {
