@@ -18,6 +18,7 @@ url = "http://127.0.0.1:5000/"
 def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
+    print ('create successful')
 
 
 @app.route('/class_join', methods=['POST', 'GET'])
@@ -195,10 +196,7 @@ def getUserInfo():
         resJson['state'] = 1
     else:
         resJson['state'] = 0
-
-    print ( resJson)
     return jsonify(resJson)
-
 
 @app.route('/classList', methods=['POST','GET'])
 def classList():
@@ -211,6 +209,23 @@ def classList():
     }
     return jsonify(classListData)
 
+@app.route('/modifyName', methods=['POST','GET'])
+def modifyName():
+    print ( 'in modifing name')
+    data = to_Data()
+    print (data)
+
+    OK = Users.query.filter_by(openId =data['open_id']).update({'name':data['student_name'], 'sno':data['student_id'] })
+    resJson = {}
+    if OK:
+        db.session.commit()
+        resJson['state'] = 1
+        resJson['info'] = 'success'
+    else:
+        resJson['state'] = 0
+        resJson['info'] = 'sth wrong'
+
+    return jsonify(resJson)
 @app.route('/')
 def index():
     #return render_template('index.html')

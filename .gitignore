@@ -3,6 +3,6 @@ venv/
 __pycache__/
 
 config.py
-
 webPages/.DS_Store
 
+config.py
