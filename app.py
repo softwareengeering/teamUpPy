@@ -107,10 +107,10 @@ def showJoinRequest():
       print('find nothing')
       return ("1")
 
-# "http://127.0.0.1:5000/applicationHanadle"
-@app.route('/applicationHanadle',methods=['POST','GET'])
-def applicationHanadle():
-    print( 'in applicationHanadle ....')
+# "http://127.0.0.1:5000/applicationHandle"
+@app.route('/applicationHandle',methods=['POST','GET'])
+def applicationHandle():
+    print( 'in applicationHandle ....')
     data = to_Data()
     print(data['apply_msg_id'])
     requestsearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()  # 在表中找到这一条申请
@@ -118,9 +118,15 @@ def applicationHanadle():
     dataRes={}
     dataRes['id']=data['apply_msg_id']
 
-    getcap = Team.query.filter_by(id=requestsearch[0].team_id).all()  # 在队伍表中找到队伍的队长id
+    applicantsearch=Users.query.filter_by(id=requestsearch[0].applicant_id).all()
+    dataRes['applyer']=applicantsearch[0].name
+
+    getcap = Team.query.filter_by(id=requestsearch[0].team_id).all()  # 在队伍表中找到队伍（为了找到队长id）
     capsearch = Users.query.filter_by(id=getcap[0].id).all()  # 在用户表中找到队长的名字
     dataRes['cap'] = capsearch[0].name
+
+    classsearch=Class.query.filter_by(id=getcap[0].class_id).all()#找到队伍所在的班级
+    dataRes['class_name'] =classsearch[0].name
 
     dataRes['team_id']=requestsearch[0].team_id
     member = []
@@ -163,15 +169,19 @@ def showInviteRequest():
     print( 'in showInviteRequest ....')
     data=to_Data()
     print(data['student_id'])
-    inviteres=InviteRequest.query.filter_by(guest_id=data['student_id']).all()#找到以id为student_id的学生收到的邀请
+    inviteres=InviteRequest.query.filter_by(guest_id=data['student_id'],request_state = 2).all()
+                                        #找到以id为student_id的学生收到的未处理的邀请
+                                        #还需要添加条件
     inviteList = []
     for x in inviteres:
         inviteTmp = {}
         inviteTmp['invite_request_id']=x.invite_request_id
         inviteList.append(inviteTmp)
+
     resJson = {}
     returnList=[]
     print(inviteList)
+
     if inviteList != []:#如果inviteList不为空就查询请求的具体信息
         for x in inviteres:
             returnTmp={}
@@ -188,11 +198,15 @@ def showInviteRequest():
                 member.append(usersearch[0].name)
             returnTmp['memeber']=member
 
-            mesearch=Users.query.filter_by(id=x.guest_id).all()
-            returnTmp['me']=mesearch[0].name
+            #mesearch=Users.query.filter_by(id=x.guest_id).all()
+            #returnTmp['me']=mesearch[0].name
+            returnTmp['me']='me'
             #returnTmp['read']=x.request_state
-            returnTmp['read']=True
-            returnTmp['time'] = '2019-05-20 13:17'
+            if(x.request_state==0):
+                returnTmp['read']=False
+            else:
+                returnTmp['read']=True
+            returnTmp['time'] = '2019-05-20 13:17'#没有确定是使用时间戳还是字符串
             returnList.append(returnTmp)
         print(returnList)
 
@@ -201,8 +215,18 @@ def showInviteRequest():
         resJson['info']='success'
         resJson['state']=1
 
-        print(resJson)
-        return jsonify(resJson)
+    else: #如果该学生没有收到邀请
+        returnTmp={}
+        returnTmp['cap']='开发者'
+        returnTmp['team_id']='000'
+        returnTmp['read']=True
+        returnTmp['time'] = '2000-00-00 00:00'
+        resJson['invite_data']=returnTmp
+        resJson['info'] = 'success'
+        resJson['state'] = 1
+
+    print(resJson)
+    return jsonify(resJson)
 
 # "http://127.0.0.1:5000/inviteDetail"
 @app.route('/inviteDetail',methods=['POST','GET'])
@@ -210,7 +234,9 @@ def inviteDetail():
     print( 'in inviteDetail ....')
     data = to_Data()
     print(data['invite_msg_id'])
-    invitesearch = InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()  # 在表中找到这一条申请
+    invitesearch = InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()  # 在表中找到这一条邀请
+    invitesearch[0].request_read=1#标为已读
+    db.session.commit()
 
     dataRes={}
     dataRes['id']=data['invite_msg_id']
@@ -243,13 +269,24 @@ def inviteHandle():
     print( 'in inviteHandle ....')
     data = to_Data()
     print(data['invite_msg_id'])
+   # invitesearch = InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()  # 在表中找到这一条邀请
 
     resJson={}
     resJson['info']='success'
-    if data['option']==0:
+
+    if data['option']==0:#拒绝
+        invitesearch = InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()  # 在表中找到这一条邀请
+        invitesearch[0].request_state = 0  # 标为拒绝
+        db.session.commit()
+        #之后改为删除这条邀请
+        # db.session.delete(invitesearch)
+        # db.session.commit()
+        resJson['state']=1
         return jsonify(resJson)
     elif data['option']==1:
+
         invitesearch=InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()
+        invitesearch[0].request_state = 1  # 标为接受
         getteam=Team.query.filter_by(id=invitesearch[0].team_id).all()#找到发出邀请的队伍
         selectrelation=ClassHasStu.query.filter_by().all()#这里的查询方法还需要进一步优化
         num=0
@@ -261,11 +298,13 @@ def inviteHandle():
         db.session.commit()
         db.session.add(team_user2)
         db.session.commit()
+
+        #还需要在表中删除掉邀请
         resJson['state']=1
         return jsonify(resJson)
     elif data['option']==2:#忽略
+        resJson['state']=1
         return jsonify(resJson)
-
 
 
 @app.route('/register',methods=['POST','GET'])

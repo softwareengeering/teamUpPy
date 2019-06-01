@@ -111,10 +111,12 @@ class InviteRequest(db.Model):
       message id
       邀请队伍id
       被邀请者id
+      是否已读
       请求状况（是否通过）
     '''
     _tablename__ = 'invite_request'
     invite_request_id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True)
     team_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('team.id'))
     guest_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('users.id'))
-    request_state = db.Column(db.Integer, default=0)
+    request_read=db.Column(db.Integer, default=0)#0未读，1已读
+    request_state = db.Column(db.Integer, default=2)#0拒绝，1通过，2未处理

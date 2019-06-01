@@ -47,6 +47,7 @@ Page({
         'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、invite_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
+        console.log(res.data)
         if (res.data.state == 1) { //用php返回的数据更新页面数据
           console.log(res.data)
           that.setData({ apply_data: res.data.invite_data })//??????????

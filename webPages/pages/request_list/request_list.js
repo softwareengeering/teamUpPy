@@ -22,6 +22,7 @@ Page({
    */
   onLoad: function (options) {
     var that=this;
+    console.log('no we in onload requestlist>>>>>>')
     wx.request({
       url: 'http://127.0.0.1:5000/showInviteRequest',//在这里加上后台的php地址
       data: { //发送给后台的数据

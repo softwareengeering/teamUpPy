@@ -3,6 +3,7 @@
     "pages/request_list/request_list",
     "pages/index/index",
     "pages/request_set/request_set",
+    
     "pages/request_join_set/request_join_set",
     "pages/team_more_set/team_more_set",
     "pages/team_more/team_more",
