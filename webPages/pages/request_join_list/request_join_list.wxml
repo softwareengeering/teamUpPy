@@ -6,7 +6,8 @@
   </view>
   
   <view wx:for="{{apply_data}}" class = 'request_box'>
-    <view class='invite_head'><text class='a_text'>{{item.cap}} </text> <text class='head_text'>处理了 </text><text class='a_text'>{{item.me}} </text><text class='head_text'>加入队伍：</text><text class='a_text'>{{item.team_id}}</text><text class='head_text'>的申请</text></view>
+    <view class='invite_head'><text class='a_text'>{{item.applyer}} </text><text class='head_text'>申请加入 </text><text class='a_text'>{{item.class_name}} </text><text class='head_text'>队伍：</text><text class='a_text'>{{item.team_id}}</text></view>
+    
     <view class='invite_member'><text class='member_text'>当前队员为：</text><text wx:for="{{item.member}}" wx:for-item="i">{{i}} </text>
       <view bindtap='read_more' data-msg_id="{{item.id}}">
         <view wx:if="{{item.read == true}}"><image src="../../image/request_0.png"/></view>
