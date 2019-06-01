@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    apply_data: [{ id: 0, cap: "队长", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", read: true }, { id: 1, cap: "队长2", team_id: "003", member: ["rrr", "hhh"], time: "2019-05-20 13:17", me: "gaga", read: false }, { id: 2, cap: "队长4", team_id: "004", member: ["rrr", "hhh"], time: "2019-05-20 13:19", me: "gaaga", read: true }, { id: 3, cap: "队长2", team_id: "003", member: ["rrr", "hhh"], time: "2019-05-20 13:17", me: "gaga", read: false }]
+    apply_data: [{ id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工" ,read:true}, { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工" ,read:false}, { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工",read:true }]
   },
   read_more: function (e) {
     console.log('in>>>>>>>>>>>>>>>>>')
