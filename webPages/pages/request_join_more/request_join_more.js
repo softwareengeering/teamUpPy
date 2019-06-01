@@ -10,10 +10,11 @@ Page({
   },
   read_already: function (ifagree) {
     wx.request({
-      url: 'http://127.0.0.1:5000/setJoinRead',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/applicantHandle',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
         'apply_msg_id': app.globalData.apply_msg_id,  //记得后台要将其标为已读
+        'option': ifagree
       },
       method: 'POST',
       header: {
@@ -32,13 +33,27 @@ Page({
       }
     });
   },
+
+  cancel: function (e) {
+    ifagree = 2;
+    this.interact(ifagree);
+  },
+  refuse: function (e) {
+    ifagree = 0;
+    this.interact(ifagree);
+  },
+  agree: function (e) {
+    ifagree = 1;
+    this.interact(ifagree);
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     var that=this;
     wx.request({
-      url: 'http://127.0.0.1:5000/applicationHandle',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/applicationDetail',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'apply_msg_id': app.globalData.apply_msg_id,
       },

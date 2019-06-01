@@ -104,7 +104,7 @@ class JoinRequest(db.Model):
     applicant_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
     team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
     request_read =db.Column(db.Integer,default=0)#0为未读
-    request_state = db.Column(db.Integer,default=0)
+    request_state = db.Column(db.Integer,default=2)
 
 class InviteRequest(db.Model):
     '''

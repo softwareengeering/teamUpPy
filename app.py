@@ -73,10 +73,15 @@ def showJoinRequest():
                 returnTmp={}
                 returnTmp['id']=x.join_request_id
                 getcap=Team.query.filter_by(id=x.team_id).all()#在队伍表中找到队伍的队长id
-                capsearch=Users.query.filter_by(id=getcap[0].id).all()#在用户表中找到队长的名字
-                returnTmp['cap']=capsearch[0].name
-                if getcap[0].id==data['student_id']:
-                    returnTmp['cap']='me'
+                # capsearch=Users.query.filter_by(id=getcap[0].id).all()#在用户表中找到队长的名字
+                # returnTmp['cap']=capsearch[0].name
+                # if getcap[0].id==data['student_id']:
+                #     returnTmp['cap']='me'
+                classsearch = Class.query.filter_by(id=getcap[0].class_id).all()  # 找到队伍所在的班级
+                returnTmp['class_name'] = classsearch[0].name
+
+                applicantsearch=Users.query.filter_by(id=x.applicant_id)#申请人姓名
+                returnTmp['applyer']=applicantsearch[0].name
                 returnTmp['team_id']=x.team_id#队伍id
 
                 member=[]
@@ -107,47 +112,89 @@ def showJoinRequest():
       print('find nothing')
       return ("1")
 
-# "http://127.0.0.1:5000/applicationHandle"
-@app.route('/applicationHandle',methods=['POST','GET'])
-def applicationHandle():
-    print( 'in applicationHandle ....')
+# "http://127.0.0.1:5000/inviteDetail"
+@app.route('/applicationDetail',methods=['POST','GET'])
+def applicationDetail():
+    print( 'in applicationDetail ....')
     data = to_Data()
     print(data['apply_msg_id'])
-    requestsearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()  # 在表中找到这一条申请
+    joinsearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()  # 在表中找到这一条邀请
+    joinsearch[0].request_read=1#标为已读
+    db.session.commit()
 
     dataRes={}
     dataRes['id']=data['apply_msg_id']
 
-    applicantsearch=Users.query.filter_by(id=requestsearch[0].applicant_id).all()
-    dataRes['applyer']=applicantsearch[0].name
+    applicantsearch = Users.query.filter_by(id=joinsearch[0].applicant_id).all()
+    dataRes['applyer'] = applicantsearch[0].name
 
-    getcap = Team.query.filter_by(id=requestsearch[0].team_id).all()  # 在队伍表中找到队伍（为了找到队长id）
-    capsearch = Users.query.filter_by(id=getcap[0].id).all()  # 在用户表中找到队长的名字
-    dataRes['cap'] = capsearch[0].name
+    getcap = Team.query.filter_by(id=joinsearch[0].team_id).all()  # 在队伍表中找到队伍的队长id
+    # capsearch = Users.query.filter_by(id=getcap[0].id).all()   在用户表中找到队长的名字
+    # dataRes['cap'] = capsearch[0].name
 
-    classsearch=Class.query.filter_by(id=getcap[0].class_id).all()#找到队伍所在的班级
-    dataRes['class_name'] =classsearch[0].name
+    classsearch = Class.query.filter_by(id=getcap[0].class_id).all()  # 找到队伍所在的班级
+    dataRes['class_name'] = classsearch[0].name
 
-    dataRes['team_id']=requestsearch[0].team_id
+    dataRes['team_id']=joinsearch[0].team_id
     member = []
-    membersearch = TeamHasStu.query.filter_by(team_id=requestsearch[0].team_id).all()  # 在用户-队伍表中找到所有的对应关系
+    membersearch = TeamHasStu.query.filter_by(team_id=joinsearch[0].team_id).all()  # 在用户-队伍表中找到所有的对应关系
     for x in membersearch:  # 找到队伍中所有成员的名字
         usersearch = Users.query.filter_by(id=x.user_id).all()
         member.append(usersearch[0].name)
     dataRes['memeber'] = member
-    mesearch = Users.query.filter_by(id=requestsearch[0].applicant_id).all()
-    dataRes['me'] = mesearch[0].name
-    dataRes['time'] = '2019-05-20 13:17'
-    if requestsearch[0].request_state==1:
-        dataRes['feedback']='同意'
-    else:
-        dataRes['feedback']='拒绝'
+
+    dataRes['me'] = 'me'
+    dataRes['time'] = '2019-05-20 13:16'
+    dataRes['read']=True
     resJson={}
     resJson['invite_data']=dataRes
     resJson['state']=1
     resJson['info']='success'
     print(resJson)
     return jsonify(resJson)
+
+# "http://127.0.0.1:5000/applicationHandle"
+@app.route('/applicationHandle',methods=['POST','GET'])
+def applicationHandle():
+    print('in applicationHandle ....')
+    data = to_Data()
+    print(data['apply_msg_id'])
+
+    resJson = {}
+    resJson['info'] = 'success'
+
+    if data['option'] == 0:  # 拒绝
+        applysearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()  # 在表中找到这一条邀请
+        applysearch[0].request_state = 0  # 标为拒绝
+        db.session.commit()
+        # 之后改为删除这条邀请
+        # db.session.delete(invitesearch)
+        # db.session.commit()
+        resJson['state'] = 1
+        return jsonify(resJson)
+    elif data['option'] == 1:
+
+        applysearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()
+        applysearch[0].request_state = 1  # 标为接受
+        getteam = Team.query.filter_by(id=applysearch[0].team_id).all()  # 找到收到邀请的队伍
+        getclass=Class.query.filter_by(id=getteam[0].class_id).all()#找到队伍的班级
+        selectrelation = ClassHasStu.query.filter_by().all()  # 这里的查询方法还需要进一步优化
+        num = 0
+        for x in selectrelation:
+            num = num + 1
+        team_user = ClassHasStu(id=str(num + 1), class_id=getclass[0].id, user_id=data['student_id'], team_id=getteam[0].id)
+        team_user2 = TeamHasStu(id=str(num + 1), class_id=getclass[0].id, user_id=data['student_id'], team_id=getteam[0].id)
+        db.session.add(team_user)
+        db.session.commit()
+        db.session.add(team_user2)
+        db.session.commit()
+
+        # 还需要在表中删除掉邀请
+        resJson['state'] = 1
+        return jsonify(resJson)
+    elif data['option'] == 2:  # 忽略
+        resJson['state'] = 1
+        return jsonify(resJson)
 
 # "http://127.0.0.1:5000/setJoinRead"
 @app.route('/setJoinRead',methods=['POST','GET'])
@@ -288,12 +335,13 @@ def inviteHandle():
         invitesearch=InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()
         invitesearch[0].request_state = 1  # 标为接受
         getteam=Team.query.filter_by(id=invitesearch[0].team_id).all()#找到发出邀请的队伍
+        getclass = Class.query.filter_by(id=getteam[0].class_id).all()  # 找到队伍的班级
         selectrelation=ClassHasStu.query.filter_by().all()#这里的查询方法还需要进一步优化
         num=0
         for x in selectrelation:
             num=num+1
-        team_user=ClassHasStu(id=str(num+1),class_id='001', user_id=data['student_id'],team_id=getteam[0].id)
-        team_user2=TeamHasStu(id=str(num+1),class_id='001', user_id=data['student_id'],team_id=getteam[0].id)
+        team_user=ClassHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
+        team_user2=TeamHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
         db.session.add(team_user)
         db.session.commit()
         db.session.add(team_user2)
