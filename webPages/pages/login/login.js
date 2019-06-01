@@ -21,6 +21,9 @@ Page({
         console.log(res);
         if (res.data.state == 1) {
           app.globalData.student_id = e.detail.value.student_id; //改变公共变量学生学号
+          app.globalData.user_name = e.detail.value.student_name;
+          console.log('app.student_id ', app.globalData.student_id )
+          console.log('app.studentname ', app.globalData.user_name)
           wx.switchTab({ //跳转到个人首页
             url: '../class_list/class_list',
           });
