@@ -33,13 +33,14 @@ def class_join():
     db.session.commit()
     resJson = {}
     if newMember:
-        print('添加成功')
+        print('加入班级成功')
         resJson['state'] = 1
         resJson['info'] = '班级创建创建成功！'
         resJson['class_id'] = data['class_invite_id']
     else:
+        print('加入班级失败嗷嗷')
         resJson['state'] = 0
-        resJson['info'] = '班级创建失败。'
+        resJson['info'] = '加入班级遇到了点问题嗷嗷嗷'
 
     return jsonify(resJson)
 
