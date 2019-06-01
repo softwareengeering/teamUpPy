@@ -19,6 +19,32 @@ def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
 
+
+@app.route('/class_join', methods=['POST', 'GET'])
+def class_join():
+    # get: class_invite_id,  stu_id
+    #return :none
+    print('>>>>in class join')
+    data = to_Data()
+    #theClass = Class.query.filter_by(openId=data['stu_id']).all()
+    newMember = ClassHasStu( class_id = data['class_invite_id'], user_id = data['stu_id'])
+    db.session.add(newMember)
+    db.session.commit()
+    resJson = {}
+    if newMember:
+        print('添加成功')
+        resJson['state'] = 1
+        resJson['info'] = '班级创建创建成功！'
+        resJson['class_id'] = data['class_invite_id']
+    else:
+        resJson['state'] = 0
+        resJson['info'] = '班级创建失败。'
+
+    return jsonify(resJson)
+
+
+
+
 @app.route('/class_create2', methods=['POST', 'GET'])
 def class_create2():
     #get:
@@ -40,17 +66,17 @@ def class_create2():
         resJson['state'] = 0
         resJson['info'] = "密码不能为空，请输入密码！"
         return jsonify(resJson)
-    if data['limit'] == None :
+    if data['team_size'] == None :
         print("limit is None")
         resJson['state'] = 0
         resJson['info'] = "每队上限不能为空，请输入每队上限！"
         return jsonify(resJson)
-    if isinstance(data['limit'],int):
+    if isinstance(data['team_size'],int):
         print("limit is not num")
         resJson['state'] = 0
         resJson['info'] = "每队上限必须为数字，请重新输入！"
         return jsonify(resJson)
-    if data['name'] == None :
+    if data['class_name'] == None :
         print("name is None")
         resJson['state'] = 0
         resJson['info'] = "班级名字不能为空，请输入班级名字！"
@@ -93,7 +119,7 @@ def class_create1():
         print('>>>maxID not exist')
         resJson['class_last_id'] = 0
         resJson['state'] = 1
-        resJson['info'] = str('成功！')
+        resJson['info'] = str('创建成功！')
         flag = 1
     if flag == 0:
         resJson['state'] = 0

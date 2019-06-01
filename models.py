@@ -36,6 +36,7 @@ class Users(db.Model):
     name = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
     openId = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
     sno = db.Column(db.String(255, 'utf8_general_ci'),nullable=False)
+
 class Class(db.Model):
     '''
     id（可做邀请码）
@@ -81,7 +82,7 @@ class ClassHasStu(db.Model):
     队伍id
     '''
     __tablename__ = 'class_has_stu'
-    id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
+    id = db.Column(db.Integer, primary_key=True, index=True, autoincrement=True)
     class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
-    user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.id'))
+    user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.openId'))
     team_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('team.id'))
