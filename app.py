@@ -31,6 +31,7 @@ def team_create2():
     'team_sup': this.data.team.sup,
     return: state, info
     '''
+    print(">>>>>in  team create 2")
 
 
 @app.route('/team_create1', methods=['POST', 'GET'])
@@ -47,7 +48,7 @@ def team_create1():
     data = to_Data()
     resJson = {}
     theClass = Class.query.filter_by(id = data['class_id']).one()
-    if theClass == None:
+    if theClass is None:
         resJson['state'] = 0
         resJson['info'] = '出错了嗷嗷嗷'
         return jsonify(resJson)
@@ -58,24 +59,37 @@ def team_create1():
     classInfo['name'] = theClass.name
     classInfo['sup'] = theClass.limit
     teamsIn = Team.query.filter_by(class_id = data['class_id']).count()
-    classInfo['teams_count'] = teamsIn
+    classInfo['teams_count'] = int(teamsIn)
     stuList = []
     stu = ClassHasStu.query.filter_by(class_id = data['class_id']).all()
     for s in stu:
+        print("user id in the class: ", s.user_id)
         if s.user_id != data['student_id']:
-            stuName = Users.query.filter_by(id = s.user_id).one()
-            stuList.append(stuName.name)
+            stuName = Users.query.filter_by(openId = s.user_id).one()
+            if stuName:
+                stuList.append(stuName.name)
     classInfo['single_list'] = stuList
+    print("class id: ", classInfo['id'])
+    print("class name: ", classInfo['name'])
+    print("class sup: ", classInfo['sup'])
+    print("class teams count: ", classInfo['teams_count'])
+
     resJson['class_info'] = classInfo
 
     teamInfo = {}
     teamID = db.session.query(func.max(Team.id)).one()
-    print('team id is: ', teamID[0])
     teamInfo['id'] = int(teamID[0])+1
+    #teamInfo['team'] = int(teamID[0]) + 1
+    #leaderName = Users.query.filter_by(openId = data['student_id']).one()
+    #teamInfo['leader_name'] = leaderName.name
     teamInfo['sup'] = theClass.limit
     teamInfo['info'] = '在此可输入队伍名，队伍简介，队员要求等信息'
     resJson['team_info'] = teamInfo
-    if resJson['team_info']!=None and resJson['class_info']!=None :
+    #print("team team: ", teamInfo['team'])
+    #print("team leader_name: ", teamInfo['leader_name'])
+    print("team sup: ", teamInfo['sup'])
+    print("team id: ", teamInfo['id'])
+    if resJson['team_info'] is not None and resJson['class_info']is not None :
         resJson['state'] = 1
         resJson['info'] = "队伍创建成功！"
         print("信息返回成功嗷嗷")
@@ -87,25 +101,61 @@ def team_create1():
 @app.route('/class_list', methods=['POST', 'GET'])
 def class_list():
     # get: student_id
-    # return: id , name, teacher, student_numbers, team_numbers
+    # return:
+    '''
+    return:
+    user: { name: '啊啊啊', id: 2016, fname: '啊' },
+    class_data: [{ id: 1, name: "算法", teacher: "刘青", student_numbers: 56, team_numbers: 5 },
+    { id: 2, name: "软件工程", teacher: "刘青", student_numbers: 72,team_numbers: 9 }],
+    info,
+    state
+    '''
     print('>>>>>int class list')
     data = to_Data()
-    resJosn = [{}]
+    resJosn = {}
     classes = ClassHasStu.query.filter_by( user_id=data['student_id']).distinct().all()
     print(classes)
+    i = 0
+    flag1 = 0
+    res = []
     for c in classes :
-        res = {}
-        res['id'] = i+1
-        className = Class.query.filter_by(id=x.id).all()
-        print('name: ', className.name, '\nteacher: ', className.teacher, '\nlimit: ', className.limit)
-        res['name'] = className.name
-        res['teacher'] = className.teacher
-        res['student_numbers'] = className.limit
+        classx = {}
+        classx['id'] = str(i+1)
+        i += 1
+        #print("class id: ")
+        className = Class.query.filter_by(id=c.class_id).all()
+        print("class: ", className)
+        print('name: ', className[0].name, '\nteacher: ', className[0].teacher, '\nlimit: ', className[0].limit)
+        classx['name'] = className[0].name
+        classx['teacher'] = className[0].teacher
+        classx['student_numbers'] = int(className[0].limit)
         teams = Team.query.filter_by(class_id = c.id).count()
         print('team num: ', teams)
-        res['team_numbers'] = teams
-        resJosn.append(res)
+        classx['team_numbers'] = int(teams)
+        res.append(classx)
+        flag1 = 1
+    resJosn['classes'] = res
+
+    resUser = {}
+    userName = Users.query.filter_by(openId = data['student_id']).all()
+    print(userName[0])
+    resUser['name'] = userName[0].name
+    resUser['id'] = userName[0].sno
+    resUser['fname'] = userName[0].name[0:1]
+
+    flag2 = 0
+    if resUser is not None:
+        resJosn['user'] = resUser
+        flag2 = 1
+
+    if flag1 ==1 and flag2 ==1 :
+        resJosn['state'] = 1
+        resJosn['info'] = '班级列表获取成功！(＾－＾)V'
+    else:
+        resJosn['state'] = 0
+        resJosn['info'] = '遇到了错误嗷嗷嗷'
     print(resJosn)
+    print("班级列表获取成功！(＾－＾)V")
     return jsonify(resJosn)
 
 

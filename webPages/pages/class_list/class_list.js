@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据我再尝试一下修改
    */
   data: {
-    user: {name:'啊啊啊', id:'2016aaaaaa', fname:'啊'},
+    user: { name: '啊啊啊', id: 2016, fname: '啊' },
     class_data: [{ id: 1, name: "算法", teacher: "刘青", student_numbers: 56, team_numbers: 5 }, { id: 2, name: "软件工程", teacher: "刘青", student_numbers: 72,team_numbers: 9 }],
     actionSheetHidden: true
   },
@@ -54,7 +54,8 @@ Page({
         fname: '?'
         }
     })
-    this.user.id = app.globalData.student_id
+    var that = this
+    that.data.user.id = app.globalData.student_id
     wx.request({
       url: 'http://127.0.0.1:5000/class_list',//在这里加上后台的php地址
       data: { //发送给后台的数据
