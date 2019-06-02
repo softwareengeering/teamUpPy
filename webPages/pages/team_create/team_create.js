@@ -24,7 +24,7 @@ Page({
     };
     console.log('form发生了submit事件，携带数据为：', e.detail.value,this.data.invitors)
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/team_create1',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'leader_name': e.detail.value.leader_name,
         'team_info': e.detail.value.info,
@@ -34,7 +34,7 @@ Page({
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
@@ -54,19 +54,20 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/team_create1',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': app.globalData.class_id,
-        'student_id': app.globalData.student_id
+        'student_id': app.globalData.OPEN_ID
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有xxx，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据      
-          this.setData({ class_info: res.data.class_info, team: res.data.team, leader_name: res.data.leader_name}) //setData函数只能更新一整个类，无法单独更新数组和整个类的儿子
+          that.setData({ class_info: res.data.class_info, team: res.data.team, leader_name: res.data.leader_name}) //setData函数只能更新一整个类，无法单独更新数组和整个类的儿子
         } else {
           wx.showToast({
             title: res.data.info
