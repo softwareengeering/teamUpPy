@@ -20,6 +20,33 @@ def init_db():
     db.create_all()
     print ('create successful')
 
+@app.route('/class_list', methods=['POST', 'GET'])
+def class_list():
+    # get: student_id
+    # return: id , name, teacher, student_numbers, team_numbers
+    print('>>>>>int class list')
+    data = to_Data()
+    resJosn = [{}]
+    classes = ClassHasStu.query.filter_by( user_id=data['student_id']).distinct().all()
+    print(classes)
+    i = 0
+    while classes[i]:
+        res = {}
+        res['id'] = i+1
+        className = Class.query.filter_by(id=classes[i]['id']).all()
+        print('name: ', className['name'], '\nteacher: ', className['teacher'], '\nlimit: ', className['limit'])
+        res['name'] = className['name']
+        res['teacher'] = className['teacher']
+        res['student_numbers'] = className['limit']
+        teams = Team.query.filter_by(class_id = classes[i]['id']).count()
+        print('team num: ', teams)
+        res['team_numbers'] = teams
+        resJosn.append(res)
+        i += 1
+    print(resJosn)
+    return jsonify(resJosn)
+
+
 
 @app.route('/class_join', methods=['POST', 'GET'])
 def class_join():
