@@ -42,18 +42,21 @@ def team_create1():
     # class_info: {id: 69321, name: "面向对象程序设计", sup: 5, teams_count: 5,
     #              single_list: ["张一一", "张二二", "张三三", "张五五", "张一一", "张二二", "张三三", "张五五", "张一一", "张二二"], last_team_id: 5},
     # team: {id: 321, sup: 5, info: "在此可输入队伍名，队伍简介，队员要求等信息"},
+    # leader_name: "张一一",
+    # invitors: []
     # info
     # state
     print(">>>>int team create 1")
     data = to_Data()
     resJson = {}
     theClass = Class.query.filter_by(id = data['class_id']).one()
-    if theClass is None:
+    leader = Users.query.filter_by(openId = data['student_id']).one()
+    if theClass is None or leader is None:
         resJson['state'] = 0
         resJson['info'] = '出错了嗷嗷嗷'
         return jsonify(resJson)
     print("the class is: ", theClass)
-
+    resJson['leader_name'] = leader.name
     classInfo = {}
     classInfo['id'] = int(theClass.id)
     classInfo['name'] = theClass.name
@@ -84,15 +87,20 @@ def team_create1():
     #teamInfo['leader_name'] = leaderName.name
     teamInfo['sup'] = theClass.limit
     teamInfo['info'] = '在此可输入队伍名，队伍简介，队员要求等信息'
-    resJson['team_info'] = teamInfo
+    resJson['team'] = teamInfo
     #print("team team: ", teamInfo['team'])
     #print("team leader_name: ", teamInfo['leader_name'])
     print("team sup: ", teamInfo['sup'])
     print("team id: ", teamInfo['id'])
-    if resJson['team_info'] is not None and resJson['class_info']is not None :
+    if resJson['team'] is not None and resJson['class_info']is not None :
         resJson['state'] = 1
         resJson['info'] = "队伍创建成功！"
         print("信息返回成功嗷嗷")
+    else:
+        resJson['state'] = 0
+        resJson['info'] = "队伍创建遇到了问题嗷嗷 哭哭"
+        print("team list出错了 哭哭")
+
     return jsonify(resJson)
 
 
