@@ -13,7 +13,7 @@ Page({
     console.log('in>>>>>>>>>>>>>>>>>')
     app.globalData.apply_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
-    wx.navigateTo({  //页面跳转
+    wx.switchTab({  //页面跳转
       url: '../request_join_more/request_join_more',
     })
   },

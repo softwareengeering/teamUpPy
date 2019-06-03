@@ -335,18 +335,16 @@ def showJoinRequest():
     resJson = {}
     if teamList != []:#如果teamList不为空就在joinRequest表中查找加入该学生队伍的请求
         print('this student is a captain')
-        print(teamList[0]['id'])
+       # print(teamList[0]['id'])
         for i in range(0,len(teamList)):
             requestres=JoinRequest.query.filter_by(team_id=teamList[i]['id'],request_state = 2).all()#找到以该学生为队长的第i个队伍收到的申请
             returnList=[]
             for x in requestres:#对于队伍i收到的每条申请
+                print(x.join_request_id)
                 returnTmp={}
                 returnTmp['id']=x.join_request_id
                 getcap=Team.query.filter_by(id=x.team_id).all()#在队伍表中找到队伍的队长id
-                # capsearch=Users.query.filter_by(id=getcap[0].id).all()#在用户表中找到队长的名字
-                # returnTmp['cap']=capsearch[0].name
-                # if getcap[0].id==data['student_id']:
-                #     returnTmp['cap']='me'
+                print('classid',getcap[0].class_id)
                 classsearch = Class.query.filter_by(id=getcap[0].class_id).all()  # 找到队伍所在的班级
                 returnTmp['class_name'] = classsearch[0].name
 
@@ -360,7 +358,6 @@ def showJoinRequest():
                     usersearch=Users.query.filter_by(id=y.user_id).all()
                     member.append(usersearch[0].name)
                 returnTmp['memeber']=member
-
                 mesearch=Users.query.filter_by(id=x.applicant_id).all()#找到申请人的名字
                 returnTmp['me']=mesearch[0].name
             #returnTmp['read']=x.request_state
@@ -491,6 +488,37 @@ def applicationHandle():
     elif data['option'] == 2:  # 忽略
         resJson['state'] = 1
         return jsonify(resJson)
+
+# "http://127.0.0.1:5000/applicationDelete"
+@app.route('/applicationDelete',methods=['POST','GET'])
+def applicationDelete():
+    print('in applicationDelete ....')
+    data = to_Data()
+    print(data['delete_msg_id_list'])
+    flag=0
+    if len(data['delete_msg_id_list'])==0:
+        print('没有消息被选中')
+    else:
+
+        for i in range(0,len(data['delete_msg_id_list'])):
+            print(i)
+            print(data['delete_msg_id_list'][i])
+            flag=0
+            joinfind=JoinRequest.query.filter_by(join_request_id=data['delete_msg_id_list'][i]).all()
+            print('success search')
+            db.session.delete(joinfind)
+            print('success delete')
+            db.session.commit
+            print('success commit')
+            print('删除成功')
+            flag=1
+    resJson={}
+    resJson['state']=1
+    if flag==1:
+        resJson['info']='success'
+    else:
+        resJson['info']='fail'
+    return jsonify(resJson)
 
 # "http://127.0.0.1:5000/setJoinRead"
 @app.route('/setJoinRead',methods=['POST','GET'])
@@ -652,6 +680,37 @@ def inviteHandle():
         resJson['state']=1
         return jsonify(resJson)
 
+
+# "http://127.0.0.1:5000/inviteDelete"
+@app.route('/inviteDelete',methods=['POST','GET'])
+def inviteDelete():
+    print('in inviteDelete ....')
+    data = to_Data()
+    print(data['delete_msg_id_list'])
+    flag=0
+    if len(data['delete_msg_id_list'])==0:
+        print('没有消息被选中')
+    else:
+
+        for i in range(0,len(data['delete_msg_id_list'])):
+            print(i)
+            print(data['delete_msg_id_list'][i])
+            flag=0
+            invitefind=InviteRequest.query.filter_by(invite_request_id=data['delete_msg_id_list'][i]).all()
+            print('success search')
+            db.session.delete(invitefind)
+            print('success delete')
+            db.session.commit
+            print('success commit')
+            print('删除成功')
+            flag=1
+    resJson={}
+    resJson['state']=1
+    if flag==1:
+        resJson['info']='success'
+    else:
+        resJson['info']='fail'
+    return jsonify(resJson)
 
 @app.route('/register',methods=['POST','GET'])
 def register():
