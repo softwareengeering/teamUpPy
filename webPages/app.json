@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/myindex/myindex",
+
     "pages/index/index",
 
     "pages/request_set/request_set",
@@ -13,7 +13,7 @@
     
     "pages/class_create/class_create",
     "pages/class_set/class_set",
-    
+    "pages/myindex/myindex",
 
 
     
