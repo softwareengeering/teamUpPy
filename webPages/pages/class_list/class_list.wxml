@@ -28,7 +28,7 @@
   <view class = 'page_body'>
     <view wx:for="{{class_data}}" class = 'class_block'>
       <view class='class_name'>{{item.name}}</view>
-      <view class='class_msg'>教师：{{item.teacher}}  班级人数：{{item.student_numbers}}  队伍数量：{{item.team_numbers}}</view>
+      <view class='class_msg'>教师：{{item.teacher}}  队伍上限：{{item.student_numbers}}  队伍数量：{{item.team_numbers}}</view>
       <view class='class_button' bindtap='go_into_class' data-classid="{{item.id}}">
         <image src='../../image/class_list/more.png' class='more_button'></image>
       </view>

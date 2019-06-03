@@ -5,21 +5,21 @@
   <view class ='in_su'>   
     <view class='basic'>
       <text class='basic_text'>ID：{{class_id}}</text>
-      <text class='basic_text'>班级名称：</text><input name="class_name" type="text" placeholder="XXX" class="join_input"/>
+      <text class='basic_text'>班级名称：</text><input name="class_name" type="text" placeholder="{{class_name}}" class="join_input"/>
     </view>
     <view class='basic_2'>
-      <text class='basic_text_2'>课程教师：</text><input name="class_teacher" type="text" placeholder="XXX" class="join_input_2" />
-      <text class='basic_text_2'>每队人数：</text><input name="team_size" type="number" placeholder="XX" class="join_input_2"/>
+      <text class='basic_text_2'>课程教师：</text><input name="class_teacher" type="text" placeholder="{{class_teacher}}" class="join_input_2" />
+      <text class='basic_text_2'>每队人数：</text><input name="team_size" type="number" placeholder="{{team_size}}" class="join_input_2"/>
     </view>
-    <text class='basic_text_3'>课程简介/要求：</text><input name="class_intro" type="text" placeholder="XX" class="join_input_3"/>
+    <text class='basic_text_3'>课程简介/要求：</text><input name="class_intro" type="text" placeholder="{{class_info}}" class="join_input_3"/>
     <view class = 'class_pw'>
-      <text class='basic_text_2'>班级管理密码：</text><input name='class_pw' type="text" placeholder="XX" class="join_input"/>
+      <text class='basic_text_2'>班级管理密码：</text><input name='class_password' type="text" placeholder="{{class_password}}" class="join_input"/>
     </view>
   </view>
   <view class = 'set_button'>
     <button formType="submit" type="default">提交修改</button>
-    <button>返回</button>
-    <button>删除班级</button>
+    <button bindtap="go_back">返回</button>
+    <button bindtap="delete_class">删除班级</button>
   </view>
 </form>
 </view>

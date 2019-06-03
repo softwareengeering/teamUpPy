@@ -8,13 +8,14 @@ Page({
   formSubmit: function (e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value)
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/class_join',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_invite_id': e.detail.value.invite_id,
+        'stu_id': app.globalData.OPEN_ID
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出原因的info返回，比如邀请码错误。
         if (res.data.state == 1) {
@@ -24,7 +25,10 @@ Page({
           });
         } else {
           wx.showToast({  //弹窗提醒邀请码错误
-            title: res.data.info
+            title: "邀请码错误",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

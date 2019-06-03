@@ -8,13 +8,19 @@ Page({
   data: {
     invite_data: [{ id: 0, cap: "队长", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", read: true }, { id: 1, cap: "队长2", team_id: "003", member: ["rrr", "hhh"], time: "2019-05-20 13:17", me: "gaga", read: false }, { id: 2, cap: "队长4", team_id: "004", member: ["rrr", "hhh"], time: "2019-05-20 13:19", me: "gaaga", read: true }, { id: 3, cap: "队长2", team_id: "003", member: ["rrr", "hhh"], time: "2019-05-20 13:17", me: "gaga" ,read:false}]
   },
-
+  //进入某条消息详情
   read_more: function(e){
     app.globalData.invite_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
  //   console.log(data.invite_data)
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
     wx.navigateTo({  //页面跳转
       url: '../request_more/request_more',
+    })
+  },
+  //进入消息管理
+  manage: function (e) {
+    wx.navigateTo({
+      url: '../request_set/request_set',
     })
   },
   /**
@@ -39,7 +45,10 @@ Page({
           console.log('see invite',that.data.invite_data)
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "入队邀请信息读取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

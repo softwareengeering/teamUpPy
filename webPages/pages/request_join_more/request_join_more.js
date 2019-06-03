@@ -11,6 +11,7 @@ Page({
   },
   interact: function (ifagree) {
     console.log('传入的消息id为：', app.globalData.apply_msg_id)
+
     wx.request({
       url: 'http://127.0.0.1:5000/applicationHandle',//在这里加上后台的php地址
       data: { //发送给后台的数据
@@ -23,13 +24,26 @@ Page({
         'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、invite_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
-        if (res.data.state == 1) { 
-          wx.redirectTo({  //页面跳转
-            url: '../request_join_list/request_join_list',
-          })
+
+       // if (res.data.state == 1) { 
+         // wx.redirectTo({  //页面跳转
+           // url: '../request_join_list/request_join_list',
+         // })
+
+        if (res.data.state == 1) { //用php返回的数据更新页面数据
+          wx.showToast({
+            title: "申请处理成功",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
+          });
+
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "申请处理失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -70,7 +84,10 @@ Page({
           that.setData({ apply_data: res.data.invite_data })//??????????
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "队伍信息获取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

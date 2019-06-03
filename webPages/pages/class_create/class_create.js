@@ -8,28 +8,40 @@ Page({
   //表单提交
   formSubmit: function (e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    var that = this
     wx.request({
-      url: 'http://127.0.0.1:5000/create_class2 ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/class_create2',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': this.data.class_id,
         'class_name': e.detail.value.class_name,
         'class_teacher': e.detail.value.class_teacher,
         'team_size': e.detail.value.team_size,
         'class_intro': e.detail.value.class_intro,
-        'class_creater': app.globalData.student_id //班级创建人信息
+        'class_pwd': e.detail.value.class_pw,
+        'class_creater': app.globalData.OPEN_ID //班级创建人信息
       },
       method: 'POST',
       header: {
         'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
+        console.log(res.data.info + "res info")
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
-            title: res.data.info
+            title: "班级创建成功",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
+          wx.navigateTo({
+            url: '../class_list/class_list',
+          })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级创建失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -40,10 +52,11 @@ Page({
    * 页面的初始数据
    */
   onLoad: function (options) {
+    var that = this
     wx.request({
-      url: 'http://127.0.0.1:5000/create_class1',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/class_create1',//在这里加上后台的php地址
       data: { //发送给后台的数据
-        'student_id': this.data.student_id,
+        'OPEN_ID': this.data.OPEN_ID,
       },
       method: 'POST',
       header: {
@@ -54,11 +67,15 @@ Page({
           that.setData({class_id: res.data.class_last_id+1})
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级列表信息获取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
     })
+    
   },
 
   /**

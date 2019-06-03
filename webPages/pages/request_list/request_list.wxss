@@ -77,3 +77,19 @@
 .invite_head{
   margin-right: 40rpx;
 }
+
+
+.set{
+  position: fixed;
+  margin-left: 570rpx;
+  width: 150rpx;
+  height: 40rpx;
+  font-size: 40rpx;
+  margin-bottom: 20rpx;
+}
+.set_icon{
+  width:55rpx;
+  height: 50rpx;
+  margin-left:  660rpx; 
+
+}
