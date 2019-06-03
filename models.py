@@ -68,7 +68,7 @@ class Team(db.Model):
     __tablename__ = 'team'
     id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
     cap = db.Column(db.String(255, 'utf8_general_ci'))
-    # user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.id'))
+    leader_id = db.Column(db.String(255, 'utf8_general_ci'), nullable=False)
     class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
     full = db.Column(db.Integer)
     msg =  db.Column(db.String(255, 'utf8_general_ci'))
@@ -86,3 +86,33 @@ class ClassHasStu(db.Model):
     class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
     user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.openId'))
     team_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('team.id'))
+
+class JoinRequest(db.Model):
+    ''''
+     message id
+     申请者id
+     申请加入的队伍id
+     是否已读（对队长而言）
+     请求状况（是否通过）
+    '''
+    __tablename__='join_request'
+    join_request_id=db.Column(db.Integer,primary_key=True, autoincrement=True)
+    applicant_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
+    team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    request_read =db.Column(db.Integer,default=0)#0为未读
+    request_state = db.Column(db.Integer,default=2)
+
+class InviteRequest(db.Model):
+    '''
+      message id
+      邀请队伍id
+      被邀请者id
+      是否已读
+      请求状况（是否通过）
+    '''
+    _tablename__ = 'invite_request'
+    invite_request_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    team_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('team.id'))
+    guest_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('users.id'))
+    request_read=db.Column(db.Integer, default=0)#0未读，1已读
+    request_state = db.Column(db.Integer, default=2)#0拒绝，1通过，2未处理

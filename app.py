@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, make_response, send_file ,jsonify
-from models import Admin, Student, Project, Users , Team , Class , ClassHasStu
+from models import *
 from exts import db
 import config, os
 from methods import get_rand, get_Info, to_Data, to_List, to_Json, new_avatar_name, create_xlsx
@@ -24,14 +24,54 @@ def init_db():
 def team_create2():
     '''
     get:
-    'leader_name': e.detail.value.leader_name,
+    'leader_id': app.globalData.OPEN_ID,
     'team_info': e.detail.value.info,
     'team_invitors': this.data.invitors,
     'team_id': this.data.team.id,
     'team_sup': this.data.team.sup,
+    'class_id': app.globalData.class_id,
     return: state, info
     '''
     print(">>>>>in  team create 2")
+    data = to_Data()
+    #更改team表中的
+    newTeam = Team(id=data['team_id'], cap = data['team_sup'],
+                   leader_id=data['leader_id'],class_id=data['class_id'],
+                   full=0, msg=data['team_info'])
+    db.session.add(newTeam)
+    db.session.commit()
+    print('新建的队伍：', newTeam)
+
+    #更改invite request表中的
+    #print(data['team_invitors'])
+    invitors = []
+    for n in data['team_invitors']:
+        stu = Users.query.filter_by(name=n).all()
+        for s in stu:
+            stuId = ClassHasStu.query.filter(ClassHasStu.user_id==s.openId,
+                                             ClassHasStu.class_id==data['class_id']).one()
+            if stuId is not None:
+                print('student find: ', stuId)
+                invitors.append(stuId)
+                continue
+    flag = 0
+    for s in invitors:
+        newInvite=InviteRequest(team_id=data['team_id'], guest_id = s.user_id)
+        db.session.add(newInvite)
+        db.session.commit()
+        flag = 1
+
+    resJson = {}
+    if newTeam is not None and flag == 1:
+        resJson['state'] = 1
+        resJson['info'] = '创建队伍成功！'
+        print('队伍创建成功')
+    else:
+        resJson['state'] = 0
+        resJson['info'] = '遇到了点问题嗷'
+        print('遇到了点问题嗷')
+    return jsonify(resJson)
+
 
 
 @app.route('/team_create1', methods=['POST', 'GET'])

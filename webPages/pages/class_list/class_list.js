@@ -18,13 +18,13 @@ Page({
   },
   bindjoin: function (e) {
     console.log('click', e)
-    wx.navigateTo({
+    wx.redirecteTo({
       url: '../class_join/class_join',
     })
   },
   bindcreate: function (e) {
     console.log('click', e)
-    wx.navigateTo({
+    wx.redirecteTo({
       url: 'pages/class_create/class_create',
     })
   },
@@ -37,7 +37,7 @@ Page({
   go_into_class: function(e){
     app.globalData.class_id=e.currentTarget.dataset.classid
     console.log('传入的班级id为：',e.currentTarget.dataset.classid)
-    wx.navigateTo({  //页面跳转
+    wx.redirectTo({  //页面跳转
       url: '../team_list/team_list',
     })
   },
@@ -57,7 +57,7 @@ Page({
     var that = this
     that.data.user.id = app.globalData.student_id
     wx.request({
-      url: 'http://127.0.0.1:5000/class_list',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/class_list',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.OPEN_ID
       },

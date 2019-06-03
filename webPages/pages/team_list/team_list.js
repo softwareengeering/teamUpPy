@@ -12,7 +12,7 @@ Page({
   go_into_team: function(e) {
     app.globalData.team_id = e.currentTarget.dataset.teamid //这里等式右边只能用小写的标识符
     console.log('传入的队伍id为：', e.currentTarget.dataset.teamid)
-    wx.navigateTo({  //页面跳转
+    wx.redicte({  //页面跳转
       url: '../team_more/team_more',
     })
   },
@@ -21,13 +21,13 @@ Page({
    */
   onLoad: function (options) {  //页面加载时向后台请求数据
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url:  app.globalData.Base_url + '/team_list',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': app.globalData.class_id,
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、class_info,teams（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据

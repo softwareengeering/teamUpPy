@@ -11,7 +11,7 @@ Page({
   //加入队伍
   join_team: function(e){
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/team_more',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': app.globalData.class_id,
         'team_id': app.globalData.team_id,
@@ -19,14 +19,14 @@ Page({
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、class_info,teams（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
           wx.showToast({
             title: res.data.info
           });
-          wx.navigateTo({ //跳转回班级首页
+          wx.redirectTo({ //跳转回班级首页
             url: '../team_list/team_list',
           });
         } else {

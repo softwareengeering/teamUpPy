@@ -10,7 +10,7 @@ Page({
     console.log('form发生了submit事件，携带数据为：', e.detail.value)
     var that = this
     wx.request({
-      url: 'http://127.0.0.1:5000/class_create2',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/class_create2',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': this.data.class_id,
         'class_name': e.detail.value.class_name,
@@ -45,7 +45,7 @@ Page({
   onLoad: function (options) {
     var that = this
     wx.request({
-      url: 'http://127.0.0.1:5000/class_create1',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/class_create1',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'OPEN_ID': this.data.OPEN_ID,
       },
