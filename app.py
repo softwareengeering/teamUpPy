@@ -106,6 +106,7 @@ def modifyName():
     OK = Users.query.filter_by(openId =data['open_id']).update({'name':data['student_name'], 'sno':data['student_id'] })
     resJson = {}
     if OK:
+        print (OK)
         db.session.commit()
         resJson['state'] = 1
         resJson['info'] = 'success'
