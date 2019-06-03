@@ -37,7 +37,10 @@ Page({
             });
           } else {
             wx.showToast({  //弹窗提醒邀请码错误
-              title: res.data.info
+	            title: "信息错误",
+	            duration: 2000,
+	            mask: true,
+	            icon: 'loading'
             });
           }
         }
@@ -48,10 +51,28 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      user: {
-        name: app.globalData.User_name,
-        id: app.globalData.student_id,
+    this.data.user.name = app.globalData.user_name
+    this.data.user.id = app.globalData.user_id
+    wx.request({
+      url: ' ',//在这里加上后台的php地址
+      data: { //发送给后台的数据
+        'student_id': app.globalData.student_id,
+      },
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) { //获取php的返回值res，res.data里面要有state、info、student_info等，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
+        if (res.data.state == 1) { //用php返回的数据更新页面数据
+          this.setData({ user: res.data.student_info })
+        } else {
+          wx.showToast({
+            title: "我的信息加载失败",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
+          });
+        }
       }
     })
     // wx.request({

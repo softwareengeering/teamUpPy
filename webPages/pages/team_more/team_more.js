@@ -21,23 +21,58 @@ Page({
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      success: function (res) { //获取php的返回值res，res.data里面要有state、info、class_info,teams（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
+      success: function (res) { 
         if (res.data.state == 1) { //用php返回的数据更新页面数据
           wx.showToast({
-            title: res.data.info
+            title: "您已成功发送加入请求",
+            duration:2000,
+            mask: true,
+            icon:'success'
           });
           wx.navigateTo({ //跳转回班级首页
             url: '../team_list/team_list',
           });
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "加入请求失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'         
           });
         }
       }
     });
   },
-
+  //队伍设置
+  team_more_set: function(e){ //验证该用户是否为该队伍的队长，是队长才可以修改
+    wx.request({
+      url: ' ',//在这里加上后台的php地址
+      data: { //发送给后台的数据
+        'student_id': app.globalData.student_id,
+        'team_id':this.data.team.id
+      },
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      success: function (res) { //获取php的返回值res，res.data里面要有state、info、class_info,teams（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
+        if (res.data.state == 1) { //用php返回的数据更新页面数据
+          if(res.data.confirm==1){ //如果验证了队长id是该用户的id
+            wx.navigateTo({ //跳转到队伍信息修改页面
+              url: '../team_more_set/team_more_set',
+            });
+          }
+        } else {
+          wx.showToast({
+            title: "只有队长才可以修改队伍信息哦~",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
+          });
+        }
+      }
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -56,7 +91,10 @@ Page({
           this.setData({ team: res.data.team_info })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "获取页面信息失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

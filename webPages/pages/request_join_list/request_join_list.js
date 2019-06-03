@@ -8,6 +8,7 @@ Page({
   data: {
     apply_data: [{ id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工" ,read:true}, { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工" ,read:false}, { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工",read:true }]
   },
+  //进入某条消息详情
   read_more: function (e) {
     app.globalData.apply_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
@@ -15,6 +16,13 @@ Page({
       url: '../request_join_more/request_join_more',
     })
   },
+  //跳转至管理消息页面
+  manage: function(e){
+    wx.navigateTo({
+      url: '../request_join_set/request_join_set',
+    })
+  },
+  
   /**
    * 生命周期函数--监听页面加载
    */
@@ -33,7 +41,10 @@ Page({
           this.setData({ apply_data: res.data.apply_data })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "加入申请信息读取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
