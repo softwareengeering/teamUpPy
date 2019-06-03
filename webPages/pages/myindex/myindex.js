@@ -33,7 +33,10 @@ Page({
           app.globalData.user_id = res.data.student_info.id
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "我的信息加载失败",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
         }
       }

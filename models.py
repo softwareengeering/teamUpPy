@@ -116,3 +116,4 @@ class InviteRequest(db.Model):
     guest_id = db.Column(db.String(255,'utf8_general_ci'), db.ForeignKey('users.id'))
     request_read=db.Column(db.Integer, default=0)#0未读，1已读
     request_state = db.Column(db.Integer, default=2)#0拒绝，1通过，2未处理
+

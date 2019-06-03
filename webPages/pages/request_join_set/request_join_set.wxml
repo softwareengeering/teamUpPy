@@ -4,10 +4,10 @@
     <navigator url = '../request_list/request_list' open-type='switchTab'><view class='title_1' >入队邀请</view></navigator>
     <view class='title_2'>加入申请</view>
   </view>
-  <form>
-  <checkbox-group>
+  <form bindsubmit='formSubmit'>
+  <checkbox-group bindchange="checkboxChange">
   <label wx:for="{{apply_data}}" >
-    <checkbox >
+    <checkbox value="{{item.id}}">
     <view class = 'request_box'>
     
     <view class='invite_head'><text class='a_text'>{{item.cap}} </text> <text class='head_text'>处理了 </text><text class='a_text'>{{item.me}} </text><text class='head_text'>加入队伍：</text><text class='a_text'>{{item.team_id}}</text><text class='head_text'>的申请</text></view>
@@ -21,7 +21,7 @@
     </view>
     </checkbox>
   </label>
-  </checkbox-group>
-  <button class='button_delete'>删除已选</button>
+  </checkbox-group> 
+  <button class='button_delete' form-type='submit'>删除所选消息</button>
   </form>
 </view>

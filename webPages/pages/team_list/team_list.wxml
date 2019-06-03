@@ -3,13 +3,13 @@
 <view class="head">
   <view class="class_name">
     <text>{{class_info.id}}：{{class_info.name}}</text>
-    <image src='../../image/my/set.jpg'></image>
+    <image src='../../image/my/set.jpg' bindtap='navi'></image>
   </view>
   <view class="intro">
     <image src="../../image/team_list/team.jpg"/>
     <text class="sup">{{class_info.sup}}人</text>
     <text class="count">共计{{class_info.teams_count}}队</text>
-    <navigator class="out">导出队伍信息</navigator>
+    <navigator class="out" url="../class_download/class_download">导出队伍信息</navigator>
     <view class="clear"></view>
   </view>
   <view class="option choose">

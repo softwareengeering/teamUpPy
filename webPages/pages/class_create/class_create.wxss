@@ -11,6 +11,9 @@
   width:240rpx;
   border-radius: 5rpx;
 }
+.clear{
+  clear:both;
+}
 .basic{
   display: flex;
   margin-top:55rpx;
@@ -44,11 +47,12 @@
 .page_m{
   background-color: white;
   margin-top:100rpx;
-  height: 830rpx;
+  height: 950rpx;
   width:680rpx;
   margin-left:35rpx;
   border-radius: 10rpx;
   border-top:#f19d38 double 40rpx;
+  position: relative;
 }
 .in_su{
  
@@ -106,9 +110,30 @@
   height: 240rpx;
   border-radius: 5rpx;
 }
-.class_pw{
-  display: flex;
+
+.basic_text_4{
+  font-size: 32rpx;
+  font-weight: bold;
+  margin:5rpx;
+  padding-left: 15rpx;
+  padding-right: 0rpx;
+  float: left;
 }
-button{
-  margin-top: 30rpx;
+
+.join_input_4{
+  background-color: white;
+  border:1rpx #aaa solid;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  width:240rpx;
+  border-radius: 5rpx;
+  float: left;
+}
+
+.finish{
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
 }

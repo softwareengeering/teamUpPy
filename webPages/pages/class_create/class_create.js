@@ -28,11 +28,20 @@ Page({
         console.log(res.data.info + "res info")
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
-            title: res.data.info
+            title: "班级创建成功",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
+          wx.navigateTo({
+            url: '../class_list/class_list',
+          })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级创建失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -58,7 +67,10 @@ Page({
           that.setData({class_id: res.data.class_last_id+1})
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "班级列表信息获取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

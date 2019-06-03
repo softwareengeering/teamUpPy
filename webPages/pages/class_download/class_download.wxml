@@ -1,6 +1,6 @@
-<!--pages/class_password/class_password.wxml-->
+<!--pages/class_download/class_download.wxml-->
 <view class= 'page_m'>
-  <view class='head'>班级管理</view>
+  <view class='head'>队伍信息导出</view>
   <view class='intro'>请输入班级管理密码</view>
   <view class ='in_su'>
     <form bindsubmit='formSubmit'>
@@ -9,3 +9,4 @@
     </form> 
   </view>
 </view>
+

@@ -3,7 +3,7 @@
   <view class="no_use"></view>
   <view class="intro">
     <text class="id">ID：{{team.id}}</text>
-    <image src='../../image/my/set.jpg'></image>
+    <image src='../../image/my/set.jpg' bindtap='team_more_set'></image>
   </view>
   <view class="intro">
     <text class="mem_sup">人数：{{team.count}}/{{team.sup}}</text>

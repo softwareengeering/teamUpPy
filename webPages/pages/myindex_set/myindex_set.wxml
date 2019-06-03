@@ -5,11 +5,11 @@
   </view>
   <form bindsubmit='formSubmit'>
     <view class="info">
-      <text>姓名：</text><input class="student_name" placeholder="{{user.name}}"/>
+      <text>姓名：</text><input class="student_name" placeholder="{{user.name}}" name="student_name"/>
     </view>
     <view class="clear"></view>
     <view class="info">
-      <text>学号：</text><input class="student_id" placeholder="{{user.id}}"/>
+      <text>学号：</text><input class="student_id" placeholder="{{user.id}}" name="student_id"/>
     </view>
     <view class="clear"></view>
     <view class="set">

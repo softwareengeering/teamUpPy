@@ -160,7 +160,7 @@ def class_list():
     print('>>>>>int class list')
     data = to_Data()
     resJosn = {}
-    classes = ClassHasStu.query.filter_by( user_id=data['student_id']).distinct().all()
+    classes = ClassHasStu.query.filter_by( user_id=data['open_id']).distinct().all()
     print(classes)
     i = 0
     flag1 = 0
@@ -184,7 +184,7 @@ def class_list():
     resJosn['classes'] = res
 
     resUser = {}
-    userName = Users.query.filter_by(openId = data['student_id']).all()
+    userName = Users.query.filter_by(openId = data['open_id']).all()
     print(userName[0])
     resUser['name'] = userName[0].name
     resUser['id'] = userName[0].sno
@@ -352,7 +352,7 @@ def test():
         resJson['state'] = 1
     else:
         print('None')
-        newUser = Users(id=str(10000+ get_rand()), name = '新同学', openId=data['open_id'] , Sno = '1000000')
+        newUser = Users(id=str(10000+ get_rand()), name = '新同学', openId=data['open_id'] , sno = '1000000')
         db.session.add(newUser)
         db.session.commit()
         print ('添加成功')
@@ -417,6 +417,7 @@ def modifyName():
     OK = Users.query.filter_by(openId =data['open_id']).update({'name':data['student_name'], 'sno':data['student_id'] })
     resJson = {}
     if OK:
+        print (OK)
         db.session.commit()
         resJson['state'] = 1
         resJson['info'] = 'success'

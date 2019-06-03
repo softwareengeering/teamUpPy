@@ -1,5 +1,4 @@
-// pages/class_password/class_password.js
-var app=getApp();
+// pages/class_download/class_download.js
 Page({
 
   /**
@@ -20,15 +19,29 @@ Page({
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded'  
       },
       success: function (res) {
         if (res.data.state == 1) {
           if (res.data.confirm == 1) {//confirm为1表明密码验证通过
-            wx.navigateTo({
-              url: '../class_set/class_set',
+            wx.downloadFile({  //队伍信息下载，一个表格文件
+              url: ' ', //资源地址
+              success(res) {
+                // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                if (res.statusCode === 200) {
+                  wx.playVoice({
+                    filePath: res.tempFilePath
+                  });
+                  wx.showToast({
+                    title: '文件下载成功',
+                    duration: 2000,
+                    mask: true,
+                    icon: 'success'
+                  })
+                }
+              }
             })
-          } else{
+          } else {
             wx.showToast({ //密码输入错误
               title: '班级管理密码输入错误',
               duration: 2000,

@@ -6,8 +6,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    apply_data: [{ id: 0, cap: "队长", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", read: true }, { id: 1, cap: "队长2", team_id: "003", member: ["rrr", "hhh"], time: "2019-05-20 13:17", me: "gaga", read: false }, { id: 2, cap: "队长4", team_id: "004", member: ["rrr", "hhh"], time: "2019-05-20 13:19", me: "gaaga", read: true }, { id: 3, cap: "队长2", team_id: "003", member: ["rrr", "hhh"], time: "2019-05-20 13:17", me: "gaga", read: false }]
+    apply_data: [{ id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工" ,read:true}, { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工" ,read:false}, { id: 1, applyer: "某某某", team_id: "002", member: ["aaa", "hhh"], time: "2019-05-20 13:14", me: "me", class_name: "软工",read:true }]
   },
+  //进入某条消息详情
   read_more: function (e) {
     app.globalData.apply_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
@@ -15,6 +16,13 @@ Page({
       url: '../request_join_more/request_join_more',
     })
   },
+  //跳转至管理消息页面
+  manage: function(e){
+    wx.navigateTo({
+      url: '../request_join_set/request_join_set',
+    })
+  },
+  
   /**
    * 生命周期函数--监听页面加载
    */
@@ -33,7 +41,10 @@ Page({
           this.setData({ apply_data: res.data.apply_data })
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "加入申请信息读取失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
