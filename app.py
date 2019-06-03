@@ -111,7 +111,6 @@ def class_list():
     # get: student_id
     # return:
     '''
-    return:
     user: { name: '啊啊啊', id: 2016, fname: '啊' },
     class_data: [{ id: 1, name: "算法", teacher: "刘青", student_numbers: 56, team_numbers: 5 },
     { id: 2, name: "软件工程", teacher: "刘青", student_numbers: 72,team_numbers: 9 }],
@@ -131,7 +130,7 @@ def class_list():
         classx['id'] = str(i+1)
         i += 1
         #print("class id: ")
-        className = Class.query.filter_by(id=c.class_id).all()
+        className = Class.query.filter_by(id=c.class_id).distinct().all()
         print("class: ", className)
         print('name: ', className[0].name, '\nteacher: ', className[0].teacher, '\nlimit: ', className[0].limit)
         classx['name'] = className[0].name
@@ -174,11 +173,23 @@ def class_join():
     #return :none
     print('>>>>in class join')
     data = to_Data()
-    #theClass = Class.query.filter_by(openId=data['stu_id']).all()
+    resJson = {}
+    theClass = Class.query.filter_by(id=data['class_invite_id']).all()
+    notIn = ClassHasStu.query.filter (ClassHasStu.class_id==data['class_invite_id'] , ClassHasStu.user_id==data['stu_id'])
+    if theClass[0] is None :
+        print('班级不存在')
+        resJson['state'] = 0
+        resJson['info'] = '邀请码输入错误，班级不存在嗷'
+        return jsonify(resJson)
+    if  notIn is not None :
+        print('学生已在班级中')
+        resJson['state'] = 0
+        resJson['info'] = '你已经在该班级中了嗷'
+        return jsonify(resJson)
+
     newMember = ClassHasStu( class_id = data['class_invite_id'], user_id = data['stu_id'])
     db.session.add(newMember)
     db.session.commit()
-    resJson = {}
     if newMember:
         print('加入班级成功')
         resJson['state'] = 1

@@ -67,7 +67,7 @@ class Team(db.Model):
     '''
     __tablename__ = 'team'
     id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
-    cap = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.id'))
+    cap = db.Column(db.String(255, 'utf8_general_ci'))
     # user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.id'))
     class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
     full = db.Column(db.Integer)
