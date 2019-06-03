@@ -67,7 +67,7 @@ def showJoinRequest():
         print('this student is a captain')
         print(teamList[0]['id'])
         for i in range(0,len(teamList)):
-            requestres=JoinRequest.query.filter_by(team_id=teamList[i]['id']).all()#找到以该学生为队长的第i个队伍收到的申请
+            requestres=JoinRequest.query.filter_by(team_id=teamList[i]['id'],request_state = 2).all()#找到以该学生为队长的第i个队伍收到的申请
             returnList=[]
             for x in requestres:#对于队伍i收到的每条申请
                 returnTmp={}
@@ -98,6 +98,17 @@ def showJoinRequest():
                 returnTmp['time'] = '2019-05-20 13:17'
                 returnList.append(returnTmp)
 
+        if(returnList==[]):
+            print('return list is null')
+            newTmp={}
+            newTmp['applyer']='开发者'
+            newTmp['team_id']='000'
+            newTmp['time']='2000-00-00 00:00'
+            newTmp['class_name']='新班级'
+            newTmp['me']='me'
+            newTmp['id']=0
+            returnList.append(newTmp)
+
         print(returnList)
 
         resJson={}
@@ -109,8 +120,23 @@ def showJoinRequest():
         return jsonify(resJson)
     else:#如果该学生只是一个普通成员
       #teamres = Team.query.filter_by(cap=data['student_id']).all()
-      print('find nothing')
-      return ("1")
+      print('the student is amenmber')
+      returnList=[]
+      newTmp = {}
+      newTmp['applyer'] = '开发者'
+      newTmp['team_id'] = '000'
+      newTmp['time'] = '2000-00-00 00:00'
+      newTmp['class_name'] = '新班级'
+      newTmp['me'] = 'me'
+      newTmp['id'] = 0
+      returnList.append(newTmp)
+      resJson = {}
+      resJson['apply_data'] = returnList
+      resJson['info'] = 'success'
+      resJson['state'] = 1
+
+      print(resJson)
+      return jsonify(resJson)
 
 # "http://127.0.0.1:5000/inviteDetail"
 @app.route('/applicationDetail',methods=['POST','GET'])
@@ -263,12 +289,14 @@ def showInviteRequest():
         resJson['state']=1
 
     else: #如果该学生没有收到邀请
+
         returnTmp={}
         returnTmp['cap']='开发者'
         returnTmp['team_id']='000'
         returnTmp['read']=True
         returnTmp['time'] = '2000-00-00 00:00'
-        resJson['invite_data']=returnTmp
+        returnList.append(returnTmp)
+        resJson['invite_data']=returnList
         resJson['info'] = 'success'
         resJson['state'] = 1
 

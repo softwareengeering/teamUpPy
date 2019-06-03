@@ -36,7 +36,7 @@ Page({
         if (res.data.state == 1) { //用php返回的数据更新页面数据
           console.log(res.data)
           that.setData({ invite_data: res.data.invite_data })
-          console.log('seee',that.data.invite_data)
+          console.log('see invite',that.data.invite_data)
         } else {
           wx.showToast({
             title: res.data.info

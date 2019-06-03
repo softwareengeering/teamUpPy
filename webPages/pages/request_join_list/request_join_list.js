@@ -36,6 +36,7 @@ Page({
          // const data = JSON.parse(res.data)
           console.log(res.data)
           that.setData({ apply_data: res.data.apply_data })
+          console.log('see applydata', that.data.apply_data)
           
         } else {
           wx.showToast({
