@@ -83,6 +83,9 @@ class ClassHasStu(db.Model):
     '''
     __tablename__ = 'class_has_stu'
     id = db.Column(db.Integer, primary_key=True, index=True, autoincrement=True)
-    class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
-    user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.openId'))
-    team_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('team.id'))
+    # class_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('class.id'))
+    # user_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('users.openId'))
+    # team_id = db.Column(db.String(255, 'utf8_general_ci'), db.ForeignKey('team.id'))
+    class_id = db.Column(db.String(255, 'utf8_general_ci'))
+    user_id = db.Column(db.String(255, 'utf8_general_ci'))
+    team_id = db.Column(db.String(255, 'utf8_general_ci'))
