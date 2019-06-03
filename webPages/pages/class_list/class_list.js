@@ -3,7 +3,7 @@ var app=getApp();
 
 Page({
   data: {
-    user: {name:'啊啊啊', id:'2016aaaaaa', fname:'啊'},
+    user: { name: '啊啊啊', id: 2016, fname: '啊' },
     class_data: [{ id: 1, name: "算法", teacher: "刘青", student_numbers: 56, team_numbers: 5 }, { id: 2, name: "软件工程", teacher: "刘青", student_numbers: 72,team_numbers: 9 }],
     actionSheetHidden: true
   },
@@ -42,6 +42,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {  //页面加载时向后台请求数据
+    var that = this
     console.log('>>>>>>', app.globalData.User_name)
     this.setData({ 
       user: { 
@@ -50,19 +51,20 @@ Page({
         fname: '?'
         }
     })
-    this.user.id = app.globalData.student_id
+    var that = this
+    that.data.user.id = app.globalData.student_id
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: 'http://127.0.0.1:5000/class_list',//在这里加上后台的php地址
       data: { //发送给后台的数据
-        'student_id': app.globalData.student_id,
+        'student_id': app.globalData.OPEN_ID
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、student_info、classes（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({ class_data:res.data.classes})
+          that.setData({ class_data:res.data.classes})
         } else {
           wx.showToast({
             title: "班级信息获取失败",

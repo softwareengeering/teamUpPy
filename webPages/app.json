@@ -2,7 +2,6 @@
   "pages": [
 
     "pages/index/index",
-
     "pages/request_set/request_set",
     "pages/request_join_set/request_join_set",
     "pages/request_join_more/request_join_more",
@@ -30,7 +29,7 @@
     "navigationBarTitleText": "TeamUP",
     "navigationBarTextStyle": "black"
   },
-  "tabBar":{
+  "tabBar": {
     "color": "#dddddd",
     "selectedColor": "#f19d38",
     "borderStyle": "black",
