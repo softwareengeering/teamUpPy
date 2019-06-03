@@ -50,7 +50,7 @@ Page({
       user: { 
         name : app.globalData.User_name , 
         id: app.globalData.student_id,
-        fname: '?'
+        fname: app.globalData.fname
         }
     })
     this.user.id = app.globalData.student_id
