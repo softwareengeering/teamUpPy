@@ -4,6 +4,7 @@
     <view class='title_1'>入队邀请</view>
     <navigator url = '../request_join_list/request_join_list'><view class='title_2'>加入申请</view></navigator>
   </view>
+  <navigator url='../request_join_set/request_join_set' ><image class='set_icon' src="../../image/set.png"/></navigator>
   <view wx:for="{{invite_data}}" class = 'request_box'>
     <view class='invite_head'><text class='a_text'>{{item.cap}} </text> <text class='head_text'>邀请 </text><text class='a_text'>{{item.me}} </text><text class='head_text'>加入 队伍：</text><text class='a_text'>{{item.team_id}}</text>
     </view>
