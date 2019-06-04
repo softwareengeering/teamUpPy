@@ -18,9 +18,9 @@
   </view>
   <view class="invite">
     <text class="title">成员名单(只有选中的小伙伴才会被留下哦)</text>
-    <checkbox-group class="member_list">
+    <checkbox-group class="member_list" bindchange="checkboxChange" >
       <label class="member" wx:for="{{team.member}}" wx:for-item="member_name">
-        <checkbox>
+        <checkbox value="{{member_name}}">
         <view>
           <image src="../../image/head_images/1.jpg"/>
         </view>

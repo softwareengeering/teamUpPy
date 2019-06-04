@@ -20,6 +20,40 @@ def init_db():
     db.create_all()
     print ('create successful')
 
+@app.route('/team_delete', methods=['POST', 'GET'])
+def team_delete():
+    '''
+    get:'class_id': app.globalData.class_id,
+        'team_id': app.globalData.team_id,
+    :return: state, info
+    '''
+    print('>>>in team delete')
+    data = to_Data()
+    flag = 1
+    theTeam = Team.query.filter_by(id = data['team_id']).one()
+    print('the team: ', theTeam)
+    db.session.delete(theTeam)
+    db.session.commit()
+
+    stuRec = ClassHasStu.query.filter(ClassHasStu.class_id==data['class_id'],
+                                      ClassHasStu.team_id == data['team_id']).all()
+    for s in stuRec:
+        s.team_id = None
+    db.session.commit()
+
+    if stuRec is None or theTeam is None:
+        flag=0
+    resJson = {}
+    if flag == 0:
+        resJson['state'] = 0
+        resJson['info'] = 'sorry删除队伍失败'
+        print('sorry删除队伍失败')
+    else:
+        resJson['state'] = 1
+        resJson['info'] = '删除队伍成功'
+        print('删除队伍成功,nice~')
+    return  jsonify(resJson)
+
 
 @app.route('/team_set2', methods=['POST', 'GET'])
 def team_set2():
@@ -32,7 +66,7 @@ def team_set2():
     :return:
     state, info
     '''
-    print('>>>>int team set 2')
+    print('>>>>in team set 2')
     data = to_Data()
     resJson = {}
     theTeam = Team.query.filter_by(id=data['team_id']).one()
@@ -43,9 +77,10 @@ def team_set2():
         flag = 0
         for l in newLeader:
             leader1 = ClassHasStu.query.filter(ClassHasStu.user_id == l.openId,
-                                               ClassHasStu.team_id == data['team_id']).all()
+                                               ClassHasStu.team_id == data['team_id'],
+                                               ClassHasStu.class_id == data['class_id']).one()
             if leader1:
-                theTeam.leader_id = leader1.openId
+                theTeam.leader_id = leader1.user_id
                 db.session.commit()
                 flag = 1
                 continue
@@ -63,19 +98,20 @@ def team_set2():
         breakFlag = 0
         for si in sID:
             for sr in theStuRec:
-                if si.openId == sr.userId:
+                if si.openId == sr.user_id:
                     stuStillIn.append(si.openId)
                     break
                     breakFlag = 1
             if breakFlag==1:
                 break
     for sr in theStuRec:
-        if sr.userId not in stuStillIn:
+        if sr.user_id not in stuStillIn:
             sr.team_id = None
     db.session.commit()
 
     resJson['state'] = 1
     resJson['info'] = '队伍信息修改成功！'
+    print('队伍信息修改成功! yeah')
     return jsonify(resJson)
 
 
@@ -192,7 +228,7 @@ def team_more():
                     info: "这是一这是这是一个神秘的队伍", member: ["张一一", "张二二", "张三三"] }
     state ,
     '''
-    print('>>>>>int team more onload')
+    print('>>>>>in team more onload')
     data = to_Data()
     team = {}
     theClass = Class.query.filter_by(id=data['class_id']).one()
@@ -240,7 +276,7 @@ def team_list():
     { id: 3, count: 3, sup: 5, member: [ "刘二二", "刘三三"], info: "这里介这里是简介这里是……" }
     ]
     '''
-    print('>>>>int team list')
+    print('>>>>in team list')
     data = to_Data()
     resJson = {}
     classInfo = {}
@@ -349,7 +385,7 @@ def team_create1():
     # invitors: []
     # info
     # state
-    print(">>>>int team create 1")
+    print(">>>>in team create 1")
     data = to_Data()
     resJson = {}
     theClass = Class.query.filter_by(id = data['class_id']).one()
@@ -420,7 +456,7 @@ def class_list():
     info,
     state
     '''
-    print('>>>>>int class list')
+    print('>>>>>in class list')
     data = to_Data()
     resJosn = {}
     classes = ClassHasStu.query.filter_by( user_id=data['open_id']).distinct().all()

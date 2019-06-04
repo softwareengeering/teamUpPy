@@ -22,11 +22,11 @@ Page({
     wx.request({
       url: app.globalData.Base_url +'/team_set2',//在这里加上后台的php地址
       data: { //发送给后台的数据
-        'leader_name': e.detail.value.leader_name,
-        'team_info': e.detail.value.info,
-        'team_members': this.data.team.members,
+        'leader_name': e.detail.value.team_leader,
+        'team_info': e.detail.value.team_info,
+        'team_members': this.data.team.member,
         'team_id': this.data.team.id,
-        'class_id': this.data.class_id,
+        'class_id': app.globalData.class_id,
       },
       method: 'POST',
       header: {
@@ -45,10 +45,10 @@ Page({
           })
         } else {
           wx.showToast({
-            title: "更改失败",
+            title: "信息更改失败",
             duration: 2000,
             mask: true,
-            icon: 'loading'
+            icon: 'none'
           });
         }
       }
@@ -88,7 +88,7 @@ Page({
             title: "队伍删除失败",
             duration: 2000,
             mask: true,
-            icon: 'loading'
+            icon: 'none'
           });
         }
       }
