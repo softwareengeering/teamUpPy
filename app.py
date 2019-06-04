@@ -475,12 +475,13 @@ def applicationHandle():
         num = 0
         for x in selectrelation:
             num = num + 1
-        team_user = ClassHasStu(id=str(num + 1), class_id=getclass[0].id, user_id=data['student_id'], team_id=getteam[0].id)
-        team_user2 = TeamHasStu(id=str(num + 1), class_id=getclass[0].id, user_id=data['student_id'], team_id=getteam[0].id)
-        db.session.add(team_user)
+        teamuser = ClassHasStu.query.filter_by(class_id=getclass[0].id, user_id=data['student_id']).all()
+
+        teamuser[0].team_id = getteam[0].id
         db.session.commit()
-        db.session.add(team_user2)
-        db.session.commit()
+
+        # team_user=ClassHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
+        # db.session.add(team_user)
 
         # 还需要在表中删除掉邀请
         resJson['state'] = 1
@@ -623,7 +624,6 @@ def inviteHandle():
     print( 'in inviteHandle ....')
     data = to_Data()
     print(data['invite_msg_id'])
-   # invitesearch = InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()  # 在表中找到这一条邀请
 
     resJson={}
     resJson['info']='success'
@@ -647,12 +647,13 @@ def inviteHandle():
         num=0
         for x in selectrelation:
             num=num+1
-        team_user=ClassHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
-        team_user2=TeamHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
-        db.session.add(team_user)
+       # team_user=ClassHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
+        teamuser=ClassHasStu.query.filter_by(class_id=getclass[0].id,user_id=data['student_id']).all()
+       #db.session.add(team_user)
+
+        teamuser[0].team_id=getteam[0].id
         db.session.commit()
-        db.session.add(team_user2)
-        db.session.commit()
+
 
         #还需要在表中删除掉邀请
         resJson['state']=1
