@@ -13,12 +13,65 @@ app.config.from_object(config)
 db.init_app(app)
 
 
+
+
 url = "http://127.0.0.1:5000/"
 @app.before_first_request
 def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
     print ('create successful')
+
+@app.route('/team_list', methods=['POST', 'GET'])
+def team_list():
+    '''
+    get:'class_id'
+    
+    :return:
+    class_info: {id: 69321, name: "面向对象程序设计", sup: 5, teams_count: 5},
+    teams: [{ id: 1, count: 3, sup: 5, member: ["张一一", "张二二", "张三三"], info: "这里是简介这里是简介" },
+    { id: 2, count: 3, sup: 5, member: ["李一一"], info: "这里是简介这里是简介这里是简介这里" },
+    { id: 3, count: 3, sup: 5, member: [ "刘二二", "刘三三"], info: "这里介这里是简介这里是……" }
+    ]
+    '''
+    print('>>>>int team list')
+    data = to_Data()
+    resJson = {}
+    classInfo = {}
+    classInfo['id'] = data['class_id']
+    theClass = Class.query.filter_by(id = data['class_id']).one()
+    classInfo['name'] = theClass.name
+    classInfo['sup'] = theClass.sup
+    classInfo['teams_count'] = Team.query.filter_by(class_id = data['class_id']).count()
+    resJson['info'] = classInfo
+    print('class info: ', classInfo)
+
+    theTeam = Team.query.filter_by(class_id = data['class_id']).all()
+    teamInfo = []
+    for t in theTeam:
+        info = {}
+        info['id'] = t.id
+        info['count'] = t.cap
+        info['sup'] = theClass.sup
+        members = []
+        stus = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
+                                        ClassHasStu.team_id == t.id).all()
+        for s in stus:
+            stuName = Users.query.filter_by(openId = s.openId).one()
+            members.append(stuName.name)
+        info['member'] = members
+    resJson['teams'] = teamInfo
+    print('team info: ', teamInfo)
+
+    if teamInfo and classInfo:
+        resJson['state'] = 1
+        resJson['info'] = '队伍列表返回成功'
+    else:
+        resJson['state'] = 0
+        resJson['info'] = '队伍列表返回失败。。'
+    return jsonify(resJson)
+
+
 
 @app.route('/team_create2', methods=['POST', 'GET'])
 def team_create2():
