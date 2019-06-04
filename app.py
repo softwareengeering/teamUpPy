@@ -501,15 +501,10 @@ def applicationDelete():
     else:
 
         for i in range(0,len(data['delete_msg_id_list'])):
-            print(i)
-            print(data['delete_msg_id_list'][i])
             flag=0
-            joinfind=JoinRequest.query.filter_by(join_request_id=data['delete_msg_id_list'][i]).all()
-            print('success search')
+            joinfind=JoinRequest.query.filter_by(join_request_id=data['delete_msg_id_list'][i]).first()
             db.session.delete(joinfind)
-            print('success delete')
-            db.session.commit
-            print('success commit')
+            db.session.commit()
             print('删除成功')
             flag=1
     resJson={}
@@ -518,20 +513,6 @@ def applicationDelete():
         resJson['info']='success'
     else:
         resJson['info']='fail'
-    return jsonify(resJson)
-
-# "http://127.0.0.1:5000/setJoinRead"
-@app.route('/setJoinRead',methods=['POST','GET'])
-def setJoinRead():
-    print( 'in setJoinRead ....')
-    data = to_Data()
-    print(data['apply_msg_id'])
-    joinsearch=JoinRequest.query.filter_by(join_request_id=data['apply_msg_id'])
-    joinsearch[0].request_state=1
-    db.session.commit()
-    resJson={}
-    resJson['state']=1
-    resJson['info']='success'
     return jsonify(resJson)
 
 # "http://127.0.0.1:5000/showInviteRequest"
@@ -696,12 +677,9 @@ def inviteDelete():
             print(i)
             print(data['delete_msg_id_list'][i])
             flag=0
-            invitefind=InviteRequest.query.filter_by(invite_request_id=data['delete_msg_id_list'][i]).all()
-            print('success search')
+            invitefind=InviteRequest.query.filter_by(invite_request_id=data['delete_msg_id_list'][i]).first()
             db.session.delete(invitefind)
-            print('success delete')
-            db.session.commit
-            print('success commit')
+            db.session.commit()
             print('删除成功')
             flag=1
     resJson={}

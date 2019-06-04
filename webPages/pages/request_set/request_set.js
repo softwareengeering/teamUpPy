@@ -39,7 +39,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.switchTab({
+          wx.switchTab({//switchTab不刷新；redirectTo不跳转
             url: '../request_list/request_list',
           })
         } else {

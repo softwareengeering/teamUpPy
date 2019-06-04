@@ -108,8 +108,8 @@ class JoinRequest(db.Model):
     '''
     __tablename__='join_request'
     join_request_id=db.Column(db.String(255,'utf8_general_ci'),primary_key=True)
-    applicant_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
-    team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    applicant_id=db.Column(db.String(255,'utf8_general_ci'))
+    team_id=db.Column(db.String(255,'utf8_general_ci'))
     request_read =db.Column(db.Integer,default=0)#0为未读
     request_state = db.Column(db.Integer,default=2)
 

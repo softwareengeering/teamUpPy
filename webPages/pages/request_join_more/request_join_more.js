@@ -68,6 +68,7 @@ Page({
    */
   onLoad: function (options) {
     var that=this;
+    console.log('show detail>>>>>>>>>>>>>>>>>>>>>')
     wx.request({
       url: 'http://127.0.0.1:5000/applicationDetail',//在这里加上后台的php地址
       data: { //发送给后台的数据
