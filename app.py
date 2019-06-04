@@ -13,14 +13,220 @@ app.config.from_object(config)
 db.init_app(app)
 
 
-
-
 url = "http://127.0.0.1:5000/"
 @app.before_first_request
 def init_db():
     print ('>>>>>>>>creating DB...')
     db.create_all()
     print ('create successful')
+
+
+@app.route('/team_set2', methods=['POST', 'GET'])
+def team_set2():
+    '''
+    get:  'leader_name': e.detail.value.leader_name,
+        'team_info': e.detail.value.info,
+        'team_members': this.data.team.members,
+        'team_id': this.data.team.id,
+        'class_id': this.data.class_id
+    :return:
+    state, info
+    '''
+    print('>>>>int team set 2')
+    data = to_Data()
+    resJson = {}
+    theTeam = Team.query.filter_by(id=data['team_id']).one()
+    if data['team_info'] :
+        theTeam.msg = data['team_info']
+    if data['leader_name']:
+        newLeader = Users.query.filter_by(name=data['leader_name']).all()
+        flag = 0
+        for l in newLeader:
+            leader1 = ClassHasStu.query.filter(ClassHasStu.user_id == l.openId,
+                                               ClassHasStu.team_id == data['team_id']).all()
+            if leader1:
+                theTeam.leader_id = leader1.openId
+                db.session.commit()
+                flag = 1
+                continue
+        if flag == 0:
+            resJson['state'] = 0
+            resJson['info'] = '新队长名字错误或不在队伍中'
+            return jsonify(resJson)
+
+
+    theStuRec = ClassHasStu.query.filter(ClassHasStu.team_id == data['team_id'],
+                                         ClassHasStu.class_id == data['class_id']).all()
+    stuStillIn = []  # 记录还在队伍中的人的openId
+    for s in data['team_members']:  #更改这些学生的ClassHasStu的记录 日
+        sID = Users.query.filter_by(name = s).all()
+        breakFlag = 0
+        for si in sID:
+            for sr in theStuRec:
+                if si.openId == sr.userId:
+                    stuStillIn.append(si.openId)
+                    break
+                    breakFlag = 1
+            if breakFlag==1:
+                break
+    for sr in theStuRec:
+        if sr.userId not in stuStillIn:
+            sr.team_id = None
+    db.session.commit()
+
+    resJson['state'] = 1
+    resJson['info'] = '队伍信息修改成功！'
+    return jsonify(resJson)
+
+
+
+@app.route('/team_set1', methods=['POST', 'GET'])
+def team_set1():
+    '''
+    get:'class_id': app.globalData.class_id,
+        'team_id': app.globalData.team_id,
+    :return: state, team
+    '''
+    print('>>>in team set 1')
+    data = to_Data()
+    team = {}
+    theClass = Class.query.filter_by(id=data['class_id']).one()
+    theTeam = Team.query.filter_by(id=data['team_id']).one()
+    team['id'] = data['team_id']
+    print('the class: ', theClass)
+    print('the team: ', theTeam)
+    team['count'] = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
+                                             ClassHasStu.team_id == data['team_id']).count()
+    team['sup'] = theClass.limit
+    leaderN = Users.query.filter_by(openId=theTeam.leader_id).one()
+    team['leader'] = leaderN.name
+    team['info'] = theTeam.msg
+    members = []
+    stus = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
+                                    ClassHasStu.team_id == data['team_id']).all()
+    for s in stus:
+        stuName = Users.query.filter_by(openId=s.user_id).one()
+        members.append(stuName.name)
+    team['member'] = members
+    print('team info: ', team)
+
+    resJson = {}
+    if team:
+        resJson['team'] = team
+        resJson['state'] = 1
+        resJson['info'] = '队伍信息get成功'
+        print('队伍信息get成功')
+    else:
+        resJson['state'] = 0
+        resJson['info'] = '队伍信息get失败嗷嗷嗷'
+        print('队伍信息get失败嗷嗷嗷')
+
+    return jsonify(resJson)
+
+
+@app.route('/team_more_join', methods=['POST', 'GET'])
+def team_more_join():
+    '''
+    get:'class_id': app.globalData.class_id,
+        'team_id': app.globalData.team_id,
+        'student_id'
+    :return:state
+    '''
+    print('>>>in team more join')
+    data = to_Data()
+    resJson = {}
+    theTeam = ClassHasStu.query.filter(ClassHasStu.class_id==data['class_id'],
+                                       ClassHasStu.team_id==data['team_id'],
+                                       ClassHasStu.user_id==data['student_id']).all()
+    print('the team: ', theTeam)
+    if not theTeam :  #学生不在这个队伍中
+        newRequest = JoinRequest(applicant_id=data['student_id'], team_id=data['team_id'])
+        db.session.add(newRequest)
+        db.session.commit()
+        if newRequest:
+            resJson['state'] = 1
+            resJson['info'] = "申请成功 棒！"
+            print('申请成功了yes！')
+        else:
+            resJson['state'] = 0
+            resJson['info'] = "出了点问题。。"
+            print('出了点问题 哭哭')
+    else:
+        resJson['state'] = 0
+        resJson['info'] = "你已经在这个队伍中了嗷"
+        print('这个傻逼学生已经在队伍中了，或者就是数据有问题了。')
+    return jsonify(resJson)
+
+
+
+
+@app.route('/team_more_set', methods=['POST', 'GET'])
+def team_more_set():
+    '''
+    get:'student_id': app.globalData.student_id,
+        'team_id':this.data.team.id
+    :return: stete, confirm
+    '''
+    print('>>>>in team more set')
+    data = to_Data()
+    resJson = {}
+    theTeam = Team.query.filter_by(id=data['team_id']).one()
+    print('the team: ', theTeam)
+    print('team leader: ', theTeam.leader_id )
+    print('student id: ', data['student_id'])
+    if theTeam.leader_id == data['student_id']:
+        resJson['confirm'] = 1
+        resJson['state'] = 1
+    else:
+        resJson['confirm'] = 0
+        resJson['state'] = 1
+    print(resJson)
+    print('team more set 返回啦啦')
+    return jsonify(resJson)
+
+
+@app.route('/team_more', methods=['POST', 'GET'])
+def team_more():
+    '''get:team_id, class_id
+    return: team_info: { id: 321, count: 3, sup: 5, leader: "张一一",
+                    info: "这是一这是这是一个神秘的队伍", member: ["张一一", "张二二", "张三三"] }
+    state ,
+    '''
+    print('>>>>>int team more onload')
+    data = to_Data()
+    team = {}
+    theClass = Class.query.filter_by(id=data['class_id']).one()
+    theTeam = Team.query.filter_by(id = data['team_id']).one()
+    team['id'] = data['team_id']
+    print('the class: ', theClass)
+    print('the team: ', theTeam)
+    team['count'] = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
+                                             ClassHasStu.team_id == data['team_id']).count()
+    team['sup'] = theClass.limit
+    leaderN = Users.query.filter_by(openId = theTeam.leader_id).one()
+    team['leader'] = leaderN.name
+    team['info'] = theTeam.msg
+    members = []
+    stus = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
+                                    ClassHasStu.team_id == data['team_id']).all()
+    for s in stus:
+        stuName = Users.query.filter_by(openId=s.user_id).one()
+        members.append(stuName.name)
+    team['member'] = members
+    print('team info: ', team)
+
+    resJson = {}
+    if team:
+        resJson['team_info'] = team
+        resJson['state'] = 1
+        print('队伍信息get成功')
+    else:
+        resJson['state'] = 0
+        print('队伍信息get失败嗷嗷嗷')
+
+    return  jsonify(resJson)
+
+
 
 @app.route('/team_list', methods=['POST', 'GET'])
 def team_list():
@@ -41,25 +247,29 @@ def team_list():
     classInfo['id'] = data['class_id']
     theClass = Class.query.filter_by(id = data['class_id']).one()
     classInfo['name'] = theClass.name
-    classInfo['sup'] = theClass.sup
+    classInfo['sup'] = theClass.limit
     classInfo['teams_count'] = Team.query.filter_by(class_id = data['class_id']).count()
-    resJson['info'] = classInfo
+    resJson['class_info'] = classInfo
     print('class info: ', classInfo)
 
     theTeam = Team.query.filter_by(class_id = data['class_id']).all()
+    print('the team: ', theTeam)
     teamInfo = []
     for t in theTeam:
         info = {}
         info['id'] = t.id
-        info['count'] = t.cap
-        info['sup'] = theClass.sup
+        info['count'] = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
+                                        ClassHasStu.team_id == t.id).count()
+        info['sup'] = theClass.limit
         members = []
         stus = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
                                         ClassHasStu.team_id == t.id).all()
         for s in stus:
-            stuName = Users.query.filter_by(openId = s.openId).one()
+            stuName = Users.query.filter_by(openId = s.user_id).one()
             members.append(stuName.name)
         info['member'] = members
+        teamInfo.append(info)
+
     resJson['teams'] = teamInfo
     print('team info: ', teamInfo)
 
@@ -229,7 +439,7 @@ def class_list():
         classx['name'] = className[0].name
         classx['teacher'] = className[0].teacher
         classx['student_numbers'] = int(className[0].limit)
-        teams = Team.query.filter_by(class_id = c.id).count()
+        teams = Team.query.filter_by(class_id = c.class_id).count()
         print('team num: ', teams)
         classx['team_numbers'] = int(teams)
         res.append(classx)

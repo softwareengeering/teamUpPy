@@ -20,17 +20,17 @@ Page({
     };
     console.log('form发生了submit事件，携带数据为：', e.detail.value, this.data.invitors)
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url +'/team_set2',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'leader_name': e.detail.value.leader_name,
         'team_info': e.detail.value.info,
         'team_members': this.data.team.members,
         'team_id': this.data.team.id,
-        'team_sup': this.data.team.sup,
+        'class_id': this.data.class_id,
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
@@ -40,7 +40,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.navigateTo({
+          wx.redirectTo({
             url: '../team_more/team_more',
           })
         } else {
@@ -56,14 +56,14 @@ Page({
   },
 
   go_back: function (e) {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../team_list/team_list',
     })
   },
 
   delete_team: function (e) {
     wx.request({
-      url: 'http://127.0.0.1:5000/create_class2 ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/team_delete',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': app.globalData.class_id,
         'team_id': app.globalData.team_id,
@@ -80,7 +80,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.navigateTo({
+          wx.redirectTo({
             url: '../team_list/team_list',
           })
         } else {
@@ -99,8 +99,9 @@ Page({
    * 页面的初始数据
    */
   onLoad: function (options) {
+    var that = this
     wx.request({
-      url: 'http://127.0.0.1:5000/create_class1',//在这里加上后台的php地址
+      url: app.globalData.Base_url +'/team_set1',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': app.globalData.class_id,
         'team_id': app.globalData.team_id,

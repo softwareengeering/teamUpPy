@@ -1,12 +1,12 @@
 <!--pages/team_more_set/team_more_set.wxml-->
 <view class="create_box">
   <view class="no_use"></view>
-  <form>
+  <form bindsubmit='formSubmit'>
   <view class="intro">
     <text class="id">ID：{{team.id}}</text>
   </view>
   <view class="intro">
-    <text class="mem_sup">人数：</text><input name='team_sup' type="text" placeholder="{{team.count}}/{{team.sup}}" class="join_input"/>
+    <text class="mem_sup">人数：{{team.count}}/{{team.sup}}</text>
   </view>
   <view class="intro">
     <text class="leader">队长：</text><input name='team_leader' type="text" placeholder="{{team.leader}}" class="join_input"/>

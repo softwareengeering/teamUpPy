@@ -12,13 +12,13 @@ Page({
   go_into_team: function(e) {
     app.globalData.team_id = e.currentTarget.dataset.teamid //这里等式右边只能用小写的标识符
     console.log('传入的队伍id为：', e.currentTarget.dataset.teamid)
-    wx.redicte({  //页面跳转
+    wx.redirectTo({  //页面跳转
       url: '../team_more/team_more',
     })
   },
   //管理班级信息页面的跳转
   navi: function(e){
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../class_password/class_password',
     })
   },
@@ -26,6 +26,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {  //页面加载时向后台请求数据
+  var that = this
     wx.request({
       url:  app.globalData.Base_url + '/team_list',//在这里加上后台的php地址
       data: { //发送给后台的数据
@@ -37,7 +38,7 @@ Page({
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、class_info,teams（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({ class_info:res.data.class_info, teams:res.data.teams })
+          that.setData({ class_info:res.data.class_info, teams:res.data.teams })
         } else {
           wx.showToast({
             title: "班级队伍信息加载失败",
