@@ -17,7 +17,7 @@ Page({
         'class_teacher': e.detail.value.class_teacher,
         'team_size': e.detail.value.team_size,
         'class_intro': e.detail.value.class_intro,
-        'class_pwd': e.detail.value.class_pw,
+        'class_pwd': e.detail.value.class_password,
         'class_creater': app.globalData.OPEN_ID //班级创建人信息
       },
       method: 'POST',
@@ -33,7 +33,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.navigateTo({
+          wx.switchTab({
             url: '../class_list/class_list',
           })
         } else {
