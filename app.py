@@ -325,8 +325,8 @@ def test():
 def showJoinRequest():
     print( 'in showJoinRequest ....')
     data=to_Data()
-    print(data['student_id'])
-    teamres=Team.query.filter_by(cap=data['student_id']).all()#找到以id为student_id的学生为队长的队伍
+    print(data['student_id'])#这是一个openid
+    teamres=Team.query.filter_by(cap=data['student_id']).all()#找到以openid为student_id的学生为队长的队伍
     teamList = []
     for x in teamres:
         teamTmp = {}
@@ -353,7 +353,7 @@ def showJoinRequest():
                 returnTmp['team_id']=x.team_id#队伍id
 
                 member=[]
-                membersearch=TeamHasStu.query.filter_by(team_id=x.team_id).all()#在用户-队伍表中找到所有的对应关系
+                membersearch=ClassHasStu.query.filter_by(team_id=x.team_id,class_id=classsearch[0].id).all()#在用户-队伍表中找到所有的对应关系
                 for y in membersearch:#找到队伍中所有成员的名字
                     usersearch=Users.query.filter_by(id=y.user_id).all()
                     member.append(usersearch[0].name)
@@ -430,7 +430,7 @@ def applicationDetail():
 
     dataRes['team_id']=joinsearch[0].team_id
     member = []
-    membersearch = TeamHasStu.query.filter_by(team_id=joinsearch[0].team_id).all()  # 在用户-队伍表中找到所有的对应关系
+    membersearch = ClassHasStu.query.filter_by(team_id=joinsearch[0].team_id,class_id=classsearch[0].id).all()  # 在用户-队伍表中找到所有的对应关系
     for x in membersearch:  # 找到队伍中所有成员的名字
         usersearch = Users.query.filter_by(id=x.user_id).all()
         member.append(usersearch[0].name)
@@ -460,30 +460,25 @@ def applicationHandle():
         applysearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()  # 在表中找到这一条邀请
         applysearch[0].request_state = 0  # 标为拒绝
         db.session.commit()
-        # 之后改为删除这条邀请
-        # db.session.delete(invitesearch)
-        # db.session.commit()
         resJson['state'] = 1
         return jsonify(resJson)
     elif data['option'] == 1:
 
         applysearch = JoinRequest.query.filter_by(join_request_id=data['apply_msg_id']).all()
-        applysearch[0].request_state = 1  # 标为接受
         getteam = Team.query.filter_by(id=applysearch[0].team_id).all()  # 找到收到邀请的队伍
-        getclass=Class.query.filter_by(id=getteam[0].class_id).all()#找到队伍的班级
-        selectrelation = ClassHasStu.query.filter_by().all()  # 这里的查询方法还需要进一步优化
-        num = 0
-        for x in selectrelation:
-            num = num + 1
-        teamuser = ClassHasStu.query.filter_by(class_id=getclass[0].id, user_id=data['student_id']).all()
+        teamuser = ClassHasStu.query.filter_by(class_id=getteam[0].class_id, user_id=applysearch[0].applicant_id).all()
+        print('getteam[0].id', getteam[0].id)
+        if teamuser[0].team_id!=0:#如果该成员已经加入了别的队伍，那么操作失败，返回state为0
+            resJson['state'] = 0
+            return jsonify(resJson)
+        applysearch[0].request_state = 1  # 标为接受
+        db.session.commit()
+
+       # getclass=Class.query.filter_by(id=getteam[0].class_id).all()#找到队伍的班级
 
         teamuser[0].team_id = getteam[0].id
         db.session.commit()
 
-        # team_user=ClassHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
-        # db.session.add(team_user)
-
-        # 还需要在表中删除掉邀请
         resJson['state'] = 1
         return jsonify(resJson)
     elif data['option'] == 2:  # 忽略
@@ -545,14 +540,12 @@ def showInviteRequest():
             returnTmp['team_id']=x.team_id
 
             member=[]
-            membersearch=TeamHasStu.query.filter_by(team_id=x.team_id).all()#在用户-队伍表中找到所有的对应关系
+            membersearch=ClassHasStu.query.filter_by(team_id=x.team_id).all()#在用户-队伍表中找到所有的对应关系
             for y in membersearch:#找到队伍中所有成员的名字
                 usersearch=Users.query.filter_by(id=y.user_id).all()
                 member.append(usersearch[0].name)
             returnTmp['memeber']=member
 
-            #mesearch=Users.query.filter_by(id=x.guest_id).all()
-            #returnTmp['me']=mesearch[0].name
             returnTmp['me']='me'
             #returnTmp['read']=x.request_state
             if(x.request_state==0):
@@ -602,7 +595,7 @@ def inviteDetail():
 
     dataRes['team_id']=invitesearch[0].team_id
     member = []
-    membersearch = TeamHasStu.query.filter_by(team_id=invitesearch[0].team_id).all()  # 在用户-队伍表中找到所有的对应关系
+    membersearch = ClassHasStu.query.filter_by(team_id=invitesearch[0].team_id).all()  # 在用户-队伍表中找到所有的对应关系
     for x in membersearch:  # 找到队伍中所有成员的名字
         usersearch = Users.query.filter_by(id=x.user_id).all()
         member.append(usersearch[0].name)
@@ -632,24 +625,21 @@ def inviteHandle():
         invitesearch = InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()  # 在表中找到这一条邀请
         invitesearch[0].request_state = 0  # 标为拒绝
         db.session.commit()
-        #之后改为删除这条邀请
-        # db.session.delete(invitesearch)
-        # db.session.commit()
         resJson['state']=1
         return jsonify(resJson)
     elif data['option']==1:
 
         invitesearch=InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()
+        getteam = Team.query.filter_by(id=invitesearch[0].team_id).all()  # 找到发出邀请的队伍
+        teamuser = ClassHasStu.query.filter_by(class_id=getteam[0].class_id, user_id=data['student_id']).all()
+        if teamuser[0].team_id!=0:#如果该成员已经加入了别的队伍，那么操作失败，返回state为0
+            resJson['state'] = 0
+            return jsonify(resJson)
+
         invitesearch[0].request_state = 1  # 标为接受
-        getteam=Team.query.filter_by(id=invitesearch[0].team_id).all()#找到发出邀请的队伍
-        getclass = Class.query.filter_by(id=getteam[0].class_id).all()  # 找到队伍的班级
-        selectrelation=ClassHasStu.query.filter_by().all()#这里的查询方法还需要进一步优化
-        num=0
-        for x in selectrelation:
-            num=num+1
-       # team_user=ClassHasStu(id=str(num+1),class_id=getclass[0].class_id, user_id=data['student_id'],team_id=getteam[0].id)
-        teamuser=ClassHasStu.query.filter_by(class_id=getclass[0].id,user_id=data['student_id']).all()
-       #db.session.add(team_user)
+        db.session.commit()
+
+       # getclass = Class.query.filter_by(id=getteam[0].class_id).all()  # 找到队伍的班级
 
         teamuser[0].team_id=getteam[0].id
         db.session.commit()

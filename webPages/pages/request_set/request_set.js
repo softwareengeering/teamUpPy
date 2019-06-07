@@ -22,7 +22,7 @@ Page({
   formSubmit: function (e) {
     console.log('form发生了submit事件，携带数据为：', this.data.delete_msg_id_list)
     wx.request({
-      url: 'http://127.0.0.1:5000/inviteDelete',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/inviteDelete',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'delete_msg_id_list': this.data.delete_msg_id_list,
         'student_id': app.globalData.student_id
@@ -39,7 +39,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.switchTab({//switchTab不刷新；redirectTo不跳转
+          wx.redirectTo({//switchTab不刷新；redirectTo不跳转
             url: '../request_list/request_list',
           })
         } else {
@@ -61,7 +61,7 @@ Page({
   onLoad: function (options) {
     var that=this;
     wx.request({
-      url: 'http://127.0.0.1:5000/showInviteRequest',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/showInviteRequest',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
       },

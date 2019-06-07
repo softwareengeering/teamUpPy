@@ -13,7 +13,7 @@ Page({
     console.log('传入的消息id为：', app.globalData.apply_msg_id)
 
     wx.request({
-      url: 'http://127.0.0.1:5000/applicationHandle',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/applicationHandle',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
         'apply_msg_id': app.globalData.apply_msg_id,  //记得后台要将其标为已读
@@ -70,7 +70,7 @@ Page({
     var that=this;
     console.log('show detail>>>>>>>>>>>>>>>>>>>>>')
     wx.request({
-      url: 'http://127.0.0.1:5000/applicationDetail',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/applicationDetail',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'apply_msg_id': app.globalData.apply_msg_id,
       },
