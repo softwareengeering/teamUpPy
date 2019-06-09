@@ -37,6 +37,9 @@ Page({
             mask: true,
             icon: 'success'
           });
+          wx.redirectTo({
+             url: '../request_join_list/request_join_list',
+          })
 
         } else {
           wx.showToast({

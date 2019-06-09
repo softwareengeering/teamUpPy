@@ -468,13 +468,17 @@ def applicationHandle():
         getteam = Team.query.filter_by(id=applysearch[0].team_id).all()  # 找到收到邀请的队伍
         teamuser = ClassHasStu.query.filter_by(class_id=getteam[0].class_id, user_id=applysearch[0].applicant_id).all()
         print('getteam[0].id', getteam[0].id)
-        if teamuser[0].team_id!=0:#如果该成员已经加入了别的队伍，那么操作失败，返回state为0
+        #print('getteam[0].class_id', getteam[0].class_id)
+        #print('teamuser[0].team_id', teamuser[0].team_id)
+        if teamuser[0].team_id is not '0':  # 如果该成员已经加入了别的队伍，那么操作失败，返回state为0
+            print('error')
+            print('teamuser[0].team_id', teamuser[0].team_id)
             resJson['state'] = 0
             return jsonify(resJson)
         applysearch[0].request_state = 1  # 标为接受
         db.session.commit()
 
-       # getclass=Class.query.filter_by(id=getteam[0].class_id).all()#找到队伍的班级
+        # getclass=Class.query.filter_by(id=getteam[0].class_id).all()#找到队伍的班级
 
         teamuser[0].team_id = getteam[0].id
         db.session.commit()
@@ -632,7 +636,7 @@ def inviteHandle():
         invitesearch=InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()
         getteam = Team.query.filter_by(id=invitesearch[0].team_id).all()  # 找到发出邀请的队伍
         teamuser = ClassHasStu.query.filter_by(class_id=getteam[0].class_id, user_id=data['student_id']).all()
-        if teamuser[0].team_id!=0:#如果该成员已经加入了别的队伍，那么操作失败，返回state为0
+        if teamuser[0].team_id is not '0': # 如果该成员已经加入了别的队伍，那么操作失败，返回state为0
             resJson['state'] = 0
             return jsonify(resJson)
 
@@ -643,7 +647,6 @@ def inviteHandle():
 
         teamuser[0].team_id=getteam[0].id
         db.session.commit()
-
 
         #还需要在表中删除掉邀请
         resJson['state']=1

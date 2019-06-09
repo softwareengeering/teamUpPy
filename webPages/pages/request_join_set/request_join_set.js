@@ -39,7 +39,7 @@ Page({
             icon: 'success'
           });
           wx.redirectTo({
-            url: app.globalData.Base_url + '/request_join_list',
+            url: '../request_join_list/request_join_list',
           })
         } else {
           wx.showToast({

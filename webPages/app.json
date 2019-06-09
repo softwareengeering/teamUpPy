@@ -1,11 +1,12 @@
 {
   "pages": [
-    "pages/request_join_list/request_join_list",
+    "pages/request_list/request_list",
     "pages/index/index",
+    "pages/request_join_list/request_join_list",
     "pages/request_set/request_set",
     "pages/request_join_set/request_join_set",
     "pages/request_join_more/request_join_more",
-    "pages/request_list/request_list",
+   
     "pages/team_more_set/team_more_set",
     "pages/team_more/team_more",
     "pages/team_list/team_list",

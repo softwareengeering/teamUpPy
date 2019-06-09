@@ -35,6 +35,9 @@ Page({
             mask: true,
             icon: 'success'
           });
+          wx.reLaunch({
+            url: '../request_list/request_list',
+          })
 
         } else {
           wx.showToast({
