@@ -73,6 +73,17 @@ class Team(db.Model):
     full = db.Column(db.Integer)
     msg =  db.Column(db.String(255, 'utf8_general_ci'))
 
+class TeamHasStu(db.Model):
+    '''
+      班级id
+      队伍id
+      学生id
+    '''
+    __tablename__='team_has_stu'
+    id = db.Column(db.String(255, 'utf8_general_ci'), primary_key=True, index=True)
+    class_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('class.id'))
+    team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    user_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
 
 class ClassHasStu(db.Model):
     '''
@@ -97,8 +108,9 @@ class JoinRequest(db.Model):
     '''
     __tablename__='join_request'
     join_request_id=db.Column(db.Integer,primary_key=True, autoincrement=True)
-    applicant_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('users.id'))
-    team_id=db.Column(db.String(255,'utf8_general_ci'),db.ForeignKey('team.id'))
+    applicant_id=db.Column(db.String(255,'utf8_general_ci'))
+    team_id=db.Column(db.String(255,'utf8_general_ci'))
+
     request_read =db.Column(db.Integer,default=0)#0为未读
     request_state = db.Column(db.Integer,default=2)
 

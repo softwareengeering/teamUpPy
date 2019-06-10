@@ -11,6 +11,7 @@ Page({
   //进入某条消息详情
   read_more: function(e){
     app.globalData.invite_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
+ //   console.log(data.invite_data)
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
     wx.navigateTo({  //页面跳转
       url: '../request_more/request_more',
@@ -26,18 +27,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that=this;
+    console.log('no we in onload requestlist>>>>>>')
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/showInviteRequest',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、invite_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({ invite_data: res.data.invite_data })
+          console.log(res.data)
+          that.setData({ invite_data: res.data.invite_data })
+          console.log('see invite',that.data.invite_data)
         } else {
           wx.showToast({
             title: "入队邀请信息读取失败",

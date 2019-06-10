@@ -1,7 +1,7 @@
 DIALECT ='mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = '1111' # 此处填写你的数据库密码
+PASSWORD = '1234' # 此处填写你的数据库密码
 HOST = 'localhost' # 部署到服务器不能用127.0.0.1 得用localhost
 PORT = '3306'
 DATABSE = 'teamUpDb' # 此处为你建的数据库的名称

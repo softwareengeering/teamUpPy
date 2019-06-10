@@ -10,6 +10,7 @@ Page({
   },
   //进入某条消息详情
   read_more: function (e) {
+    console.log('in>>>>>>>>>>>>>>>>>')
     app.globalData.apply_msg_id = e.currentTarget.dataset.msg_id //修改公共的msg_id值
     console.log('传入的消息id为：', e.currentTarget.dataset.msg_id)
     wx.navigateTo({  //页面跳转
@@ -27,18 +28,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/showJoinRequest',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_id': app.globalData.student_id,
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、apply_data（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
+    
         if (res.data.state == 1) { //用php返回的数据更新页面数据
-          this.setData({ apply_data: res.data.apply_data })
+         // const data = JSON.parse(res.data)
+          console.log(res.data)
+          that.setData({ apply_data: res.data.apply_data })
+          console.log('see applydata', that.data.apply_data)
+          
         } else {
           wx.showToast({
             title: "加入申请信息读取失败",
