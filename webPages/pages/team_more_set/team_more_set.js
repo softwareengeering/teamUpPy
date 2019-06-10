@@ -40,7 +40,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.redirectTo({
+          wx.navigateTo({
             url: '../team_more/team_more',
           })
         } else {
@@ -56,7 +56,7 @@ Page({
   },
 
   go_back: function (e) {
-    wx.redirectTo({
+    wx.navigateTo({
       url: '../team_list/team_list',
     })
   },
@@ -80,7 +80,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.redirectTo({
+          wx.navigateTo({
             url: '../team_list/team_list',
           })
         } else {
@@ -135,7 +135,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onload();
   },
 
   /**

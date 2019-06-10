@@ -29,7 +29,7 @@ Page({
             mask: true,
             icon:'success'
           });
-          wx.redirectTo({ //跳转回班级首页
+          wx.navigateTo({ //跳转回班级首页
             url: '../team_list/team_list',
           });
         } else {
@@ -58,7 +58,7 @@ Page({
       success: function (res) { //获取php的返回值res，res.data里面要有state、info、class_info,teams（页面主要数据），如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据
           if(res.data.confirm==1){ //如果验证了队长id是该用户的id
-            wx.redirectTo({ //跳转到队伍信息修改页面
+            wx.navigateTo({ //跳转到队伍信息修改页面
               url: '../team_more_set/team_more_set',
             });
           }
@@ -115,7 +115,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onload();
   },
 
   /**

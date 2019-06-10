@@ -1,4 +1,4 @@
-// pages/team_create/team_create.js
+// page/team_create/team_create.js
 var app=getApp();
 Page({
   /**
