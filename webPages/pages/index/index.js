@@ -29,8 +29,9 @@ Page({
           method: 'GET',
           success: function (res) {
             console.log('成功获取OPENID和SESSION_KEY',res.data)
+            console.log('>>>>>>>>>>>>>>>3')
             app.globalData.OPEN_ID = res.data.openid;//获取到的openid 
-            OPEN_ID = app.globalData.OPEN_ID; 
+            OPEN_ID = app.globalData.OPEN_ID;
             SESSION_KEY = res.data.session_key;//获取到session_key  
             console.log(OPEN_ID.length)
             console.log(SESSION_KEY.length)
@@ -70,7 +71,10 @@ Page({
                   }
                 } else {
                   wx.showToast({
-                    title: data.info
+                    title: "登录失败",
+                    duration: 2000,
+                    mask: true,
+                    icon: 'loading'
                   });
                 }
               }

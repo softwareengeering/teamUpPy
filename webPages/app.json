@@ -4,22 +4,27 @@
     "pages/class_download/class_download",
     "pages/class_password/class_password",
     "pages/index/index",
+    "pages/request_list/request_list",
+    "pages/request_join_list/request_join_list",
     "pages/request_set/request_set",
     "pages/request_join_set/request_join_set",
-    "pages/team_more_set/team_more_set",
-    "pages/request_more/request_more",
     "pages/request_join_more/request_join_more",
+   
+    "pages/team_more_set/team_more_set",
     "pages/team_more/team_more",
-    "pages/class_create/class_create",
-    "pages/class_set/class_set",
-    "pages/request_join_list/request_join_list",
-    "pages/request_list/request_list",
-    "pages/myindex_set/myindex_set",  
-    "pages/login/login",
+    "pages/team_list/team_list",
     "pages/team_create/team_create",
+    "pages/class_download/class_download",
+    "pages/class_password/class_password",
     "pages/class_list/class_list",
     "pages/class_join/class_join",
-    "pages/myindex/myindex",
+    "pages/class_set/class_set",
+    "pages/class_create/class_create",
+    "pages/myindex/myindex",   
+    "pages/request_more/request_more",
+   
+    "pages/myindex_set/myindex_set",  
+    "pages/login/login",
     "pages/logs/logs"
   ],
   "window": {
@@ -28,7 +33,7 @@
     "navigationBarTitleText": "TeamUP",
     "navigationBarTextStyle": "black"
   },
-  "tabBar":{
+  "tabBar": {
     "color": "#dddddd",
     "selectedColor": "#f19d38",
     "borderStyle": "black",

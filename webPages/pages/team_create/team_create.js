@@ -17,33 +17,40 @@ Page({
     console.log('选中的有：',e.detail.value);
     this.data.invitors=e.detail.value
   },
-
+  //提交表单
   formSubmit: function (e) {
     if(e.detail.value.leader_name==''){ //队长默认为创建人
       e.detail.value.leader_name=this.data.leader_name
     };
     console.log('form发生了submit事件，携带数据为：', e.detail.value,this.data.invitors)
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/team_create2',//在这里加上后台的php地址
       data: { //发送给后台的数据
-        'leader_name': e.detail.value.leader_name,
+        'leader_id': app.globalData.OPEN_ID,
         'team_info': e.detail.value.info,
         'team_invitors': this.data.invitors,
         'team_id': this.data.team.id,
         'team_sup': this.data.team.sup,
+        'class_id': app.globalData.class_id,
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒。
         if (res.data.state == 1) {
           wx.showToast({   //弹窗提醒
-            title: res.data.info
+            title: "队伍创建成功",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "队伍创建失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }
@@ -54,22 +61,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
     wx.request({
-      url: ' ',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/team_create1',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'class_id': app.globalData.class_id,
-        'student_id': app.globalData.student_id
+        'student_id': app.globalData.OPEN_ID
       },
       method: 'POST',
       header: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       success: function (res) { //获取php的返回值res，res.data里面要有xxx，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出错误信息info。
         if (res.data.state == 1) { //用php返回的数据更新页面数据      
-          this.setData({ class_info: res.data.class_info, team: res.data.team, leader_name: res.data.leader_name}) //setData函数只能更新一整个类，无法单独更新数组和整个类的儿子
+          that.setData({ class_info: res.data.class_info, team: res.data.team, leader_name: res.data.leader_name}) //setData函数只能更新一整个类，无法单独更新数组和整个类的儿子
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "页面信息初始化失败",
+            duration: 2000,
+            mask: true,
+            icon: 'loading'
           });
         }
       }

@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    user:{name: "张一一", id: "2016202239"}
+    user:{}
   },
 
   /**
@@ -33,7 +33,10 @@ Page({
           app.globalData.user_id = res.data.student_info.id
         } else {
           wx.showToast({
-            title: res.data.info
+            title: "我的信息加载失败",
+            duration: 2000,
+            mask: true,
+            icon: 'success'
           });
         }
       }
@@ -51,7 +54,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onLoad()
   },
 
   /**
