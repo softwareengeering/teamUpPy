@@ -6,7 +6,7 @@ Page({
    */
   data: {
     class_info: {id: 69321, name: "面向对象程序设计", sup: 5, teams_count: 5},
-    teams: [{ id: 1, count: 3, sup: 5, member: ["张一一", "张二二", "张三三"], info: "这里是简介这里是简介这里是简介这里是简介这里是……" }, { id: 2, count: 3, sup: 5, member: ["李一一", "李二二", "李三三"], info: "这里是简介这里是简介这里是简介这里是简介这里是……" }, { id: 3, count: 3, sup: 5, member: ["刘一一", "刘二二", "刘三三"], info: "这里是简介这里是简介这里是简介这里是简介这里是……" }]
+    teams: []
   },
   //选择进入某个队伍的传参
   go_into_team: function(e) {

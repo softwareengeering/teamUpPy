@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    user:{name: "张一一", id: "2016202239"}
+    user:{}
   },
 
   /**
@@ -54,7 +54,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onLoad()
   },
 
   /**

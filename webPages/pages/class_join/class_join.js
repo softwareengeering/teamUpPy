@@ -20,15 +20,15 @@ Page({
       success: function (res) { //获取php的返回值res，res里面要有一个state和一个info，如果成功就在info里说成功，下面的弹窗会提醒,不成功给出原因的info返回，比如邀请码错误。
         if (res.data.state == 1) {
           app.globalData.class_id = res.data.class_id;  //更新全局变量中的class_id
-          wx.redirectTo({ //跳转到班级首页
-            url: '../team_list/team_list',
+          wx.reLaunch({ //跳转到班级首页
+            url: '../class_list/class_list',
           });
         } else {
           wx.showToast({  //弹窗提醒邀请码错误
             title: "邀请码错误",
             duration: 2000,
             mask: true,
-            icon: 'loading'
+            icon: 'none'
           });
         }
       }

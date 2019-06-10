@@ -237,6 +237,7 @@ def team_more():
     print('the team: ', theTeam)
     team['count'] = ClassHasStu.query.filter(ClassHasStu.class_id == data['class_id'],
                                              ClassHasStu.team_id == data['team_id']).count()
+    print(team)
     team['sup'] = theClass.limit
     leaderN = Users.query.filter_by(openId = theTeam.leader_id).one()
     team['leader'] = leaderN.name
@@ -308,12 +309,13 @@ def team_list():
     resJson['teams'] = teamInfo
     print('team info: ', teamInfo)
 
-    if teamInfo and classInfo:
+    if teamInfo!=[] or classInfo!=[]:
         resJson['state'] = 1
         resJson['info'] = '队伍列表返回成功'
     else:
         resJson['state'] = 0
         resJson['info'] = '队伍列表返回失败。。'
+    print(resJson)
     return jsonify(resJson)
 
 
@@ -336,6 +338,9 @@ def team_create2():
     newTeam = Team(id=data['team_id'], cap = data['team_sup'],
                    leader_id=data['leader_id'],class_id=data['class_id'],
                    full=0, msg=data['team_info'])
+    newClassHasStu = ClassHasStu.query.filter(ClassHasStu.user_id==data['leader_id'],
+                                              ClassHasStu.class_id==data['class_id']).one()
+    newClassHasStu.team_id  =  data['team_id']
     db.session.add(newTeam)
     db.session.commit()
     print('新建的队伍：', newTeam)
@@ -513,13 +518,14 @@ def class_join():
     data = to_Data()
     resJson = {}
     theClass = Class.query.filter_by(id=data['class_invite_id']).all()
-    notIn = ClassHasStu.query.filter (ClassHasStu.class_id==data['class_invite_id'] , ClassHasStu.user_id==data['stu_id'])
+    notIn = ClassHasStu.query.filter (ClassHasStu.class_id==data['class_invite_id'] , ClassHasStu.user_id==data['stu_id']).all()
+    print('class and stu: ',notIn)
     if theClass[0] is None :
         print('班级不存在')
         resJson['state'] = 0
         resJson['info'] = '邀请码输入错误，班级不存在嗷'
         return jsonify(resJson)
-    if  notIn is not None :
+    if  notIn !=[] :
         print('学生已在班级中')
         resJson['state'] = 0
         resJson['info'] = '你已经在该班级中了嗷'
@@ -687,17 +693,17 @@ def showJoinRequest():
                 classsearch = Class.query.filter_by(id=getcap[0].class_id).all()  # 找到队伍所在的班级
                 returnTmp['class_name'] = classsearch[0].name
 
-                applicantsearch=Users.query.filter_by(id=x.applicant_id)#申请人姓名
+                applicantsearch=Users.query.filter_by(openId=x.applicant_id)#申请人姓名
                 returnTmp['applyer']=applicantsearch[0].name
                 returnTmp['team_id']=x.team_id#队伍id
 
                 member=[]
                 membersearch=ClassHasStu.query.filter_by(team_id=x.team_id,class_id=classsearch[0].id).all()#在用户-队伍表中找到所有的对应关系
                 for y in membersearch:#找到队伍中所有成员的名字
-                    usersearch=Users.query.filter_by(id=y.user_id).all()
+                    usersearch=Users.query.filter_by(openId=y.user_id).all()
                     member.append(usersearch[0].name)
                 returnTmp['member']=member
-                mesearch=Users.query.filter_by(id=x.applicant_id).all()#找到申请人的名字
+                mesearch=Users.query.filter_by(openId=x.applicant_id).all()#找到申请人的名字
                 returnTmp['me']=mesearch[0].name
             #returnTmp['read']=x.request_state
                 returnTmp['read']=True
@@ -757,7 +763,7 @@ def applicationDetail():
     dataRes={}
     dataRes['id']=data['apply_msg_id']
 
-    applicantsearch = Users.query.filter_by(id=joinsearch[0].applicant_id).all()
+    applicantsearch = Users.query.filter_by(openId=joinsearch[0].applicant_id).all()
     dataRes['applyer'] = applicantsearch[0].name
 
     getcap = Team.query.filter_by(id=joinsearch[0].team_id).all()  # 在队伍表中找到队伍的队长id
@@ -771,7 +777,7 @@ def applicationDetail():
     member = []
     membersearch = ClassHasStu.query.filter_by(team_id=joinsearch[0].team_id,class_id=classsearch[0].id).all()  # 在用户-队伍表中找到所有的对应关系
     for x in membersearch:  # 找到队伍中所有成员的名字
-        usersearch = Users.query.filter_by(id=x.user_id).all()
+        usersearch = Users.query.filter_by(openId=x.user_id).all()
         member.append(usersearch[0].name)
     dataRes['member'] = member
 
@@ -878,14 +884,17 @@ def showInviteRequest():
             returnTmp={}
             returnTmp['id']=x.invite_request_id
             getcap=Team.query.filter_by(id=x.team_id).all()#在队伍表中找到队伍的队长id
-            capsearch=Users.query.filter_by(id=getcap[0].id).all()#在用户表中找到队长的名字
+            print('getcap',getcap[0].id)
+            capsearch=Users.query.filter_by(openId=getcap[0].cap).all()#在用户表中找到队长的名字
+            print('capsearch',capsearch[0].name)
             returnTmp['cap']=capsearch[0].name
             returnTmp['team_id']=x.team_id
 
             member=[]
             membersearch=ClassHasStu.query.filter_by(team_id=x.team_id).all()#在用户-队伍表中找到所有的对应关系
+            print('membersearch',membersearch)
             for y in membersearch:#找到队伍中所有成员的名字
-                usersearch=Users.query.filter_by(id=y.user_id).all()
+                usersearch=Users.query.filter_by(openId=y.user_id).all()
                 member.append(usersearch[0].name)
             returnTmp['member'] = member
 
@@ -933,14 +942,14 @@ def inviteDetail():
     dataRes['id']=data['invite_msg_id']
 
     getcap = Team.query.filter_by(id=invitesearch[0].team_id).all()  # 在队伍表中找到队伍的队长id
-    capsearch = Users.query.filter_by(id=getcap[0].id).all()  # 在用户表中找到队长的名字
+    capsearch = Users.query.filter_by(openId=getcap[0].id).all()  # 在用户表中找到队长的名字
     dataRes['cap'] = capsearch[0].name
 
     dataRes['team_id']=invitesearch[0].team_id
     member = []
     membersearch = ClassHasStu.query.filter_by(team_id=invitesearch[0].team_id).all()  # 在用户-队伍表中找到所有的对应关系
     for x in membersearch:  # 找到队伍中所有成员的名字
-        usersearch = Users.query.filter_by(id=x.user_id).all()
+        usersearch = Users.query.filter_by(openId=x.user_id).all()
         member.append(usersearch[0].name)
     dataRes['member'] = member
 
@@ -973,8 +982,11 @@ def inviteHandle():
     elif data['option']==1:
 
         invitesearch=InviteRequest.query.filter_by(invite_request_id=data['invite_msg_id']).all()
+        print('invitesearch',invitesearch[0].team_id)
         getteam = Team.query.filter_by(id=invitesearch[0].team_id).all()  # 找到发出邀请的队伍
+        print('getteam',getteam[0].class_id)
         teamuser = ClassHasStu.query.filter_by(class_id=getteam[0].class_id, user_id=data['student_id']).all()
+        print('teamuser',teamuser[0].team_id)
         if teamuser[0].team_id is not '0': # 如果该成员已经加入了别的队伍，那么操作失败，返回state为0
             resJson['state'] = 0
             return jsonify(resJson)
