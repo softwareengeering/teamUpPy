@@ -15,7 +15,7 @@ Page({
     wx.request({
       url: app.globalData.Base_url + '/inviteHandle',//在这里加上后台的php地址Base_url/inviteHandle
       data: { //发送给后台的数据
-        'student_id': app.globalData.student_id,
+        'student_id': app.globalData.OPEN_ID,
         'invite_msg_id': app.globalData.invite_msg_id,  //记得后台要将其标为已读
         'option': ifagree
       },

@@ -39,7 +39,7 @@ Page({
             mask: true,
             icon: 'success'
           });
-          wx.redirectTo({
+          wx.reLaunch({
             url: '../request_list/request_list',
           })
         } else {
@@ -63,7 +63,7 @@ Page({
     wx.request({
       url: app.globalData.Base_url + '/showInviteRequest',//在这里加上后台的php地址
       data: { //发送给后台的数据
-        'student_id': app.globalData.student_id,
+        'student_id': app.globalData.OPEN_ID,
       },
       method: 'POST',
       header: {

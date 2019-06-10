@@ -7,7 +7,7 @@ Page({
     console.log('form发生了submit事件，携带数据为：', e.detail.value);
     console.log('app.globalData.open_id', app.globalData.OPEN_ID)
     wx.request({
-      url: 'http://127.0.0.1:5000/register',//在这里加上后台的php地址
+      url: app.globalData.Base_url + '/register',//在这里加上后台的php地址
       data: { //发送给后台的数据
         'student_name':e.detail.value.student_name,
         'student_id': e.detail.value.student_id,
