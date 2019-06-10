@@ -357,7 +357,7 @@ def showJoinRequest():
                 for y in membersearch:#找到队伍中所有成员的名字
                     usersearch=Users.query.filter_by(id=y.user_id).all()
                     member.append(usersearch[0].name)
-                returnTmp['memeber']=member
+                returnTmp['member']=member
                 mesearch=Users.query.filter_by(id=x.applicant_id).all()#找到申请人的名字
                 returnTmp['me']=mesearch[0].name
             #returnTmp['read']=x.request_state
@@ -434,7 +434,7 @@ def applicationDetail():
     for x in membersearch:  # 找到队伍中所有成员的名字
         usersearch = Users.query.filter_by(id=x.user_id).all()
         member.append(usersearch[0].name)
-    dataRes['memeber'] = member
+    dataRes['member'] = member
 
     dataRes['me'] = 'me'
     dataRes['time'] = '2019-05-20 13:16'
@@ -548,7 +548,7 @@ def showInviteRequest():
             for y in membersearch:#找到队伍中所有成员的名字
                 usersearch=Users.query.filter_by(id=y.user_id).all()
                 member.append(usersearch[0].name)
-            returnTmp['memeber']=member
+            returnTmp['member'] = member
 
             returnTmp['me']='me'
             #returnTmp['read']=x.request_state
@@ -603,7 +603,7 @@ def inviteDetail():
     for x in membersearch:  # 找到队伍中所有成员的名字
         usersearch = Users.query.filter_by(id=x.user_id).all()
         member.append(usersearch[0].name)
-    dataRes['memeber'] = member
+    dataRes['member'] = member
 
     dataRes['me'] = 'me'
     dataRes['time'] = '2019-05-20 13:17'
