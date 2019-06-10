@@ -12,13 +12,13 @@ Page({
   go_into_team: function(e) {
     app.globalData.team_id = e.currentTarget.dataset.teamid //这里等式右边只能用小写的标识符
     console.log('传入的队伍id为：', e.currentTarget.dataset.teamid)
-    wx.redirectTo({  //页面跳转
+    wx.navigateTo({  //页面跳转
       url: '../team_more/team_more',
     })
   },
   //管理班级信息页面的跳转
   navi: function(e){
-    wx.redirectTo({
+    wx.navigateTo({
       url: '../class_password/class_password',
     })
   },
@@ -75,7 +75,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
   },
 
   /**

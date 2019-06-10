@@ -15,7 +15,7 @@ Page({
   },
   bindjoin: function (e) {
     console.log('click', e)
-    wx.redirecteTo({
+    wx.navitageTo({
       url: '../class_join/class_join',
     })
   },
