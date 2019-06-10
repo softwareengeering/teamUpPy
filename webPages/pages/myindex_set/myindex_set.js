@@ -1,4 +1,4 @@
-// pages/myindex_set/myindex_set.js
+ // pages/myindex_set/myindex_set.js
 var app = getApp();
 
 Page({
@@ -13,6 +13,8 @@ Page({
   formSubmit: function (e) {
     console.log('form发生了submit事件，携带数据为：', e.detail.value,this.data.user.id,this.data.user.name)
     if (this.data.user.name !== app.globalData.User_name || this.data.user.name !== app.globalData.student_id  ){
+      this.data.user.name = app.globalData.User_name
+      this.data.user.name = app.globalData.student_id
       console.log('submitting ..... ')
       var that = this
       wx.request({
@@ -33,7 +35,7 @@ Page({
             
 
             wx.switchTab({ //跳转到我的资料页
-              url: '../myindex/myindex',
+              url: '../class_list/class_list',
             });
           } else {
             wx.showToast({  //弹窗提醒邀请码错误
@@ -107,7 +109,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onLoad()
   },
 
   /**
