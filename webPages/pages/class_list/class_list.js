@@ -21,7 +21,7 @@ Page({
   },
   bindcreate: function (e) {
     console.log('click', e)
-    wx.redirecteTo({
+    wx.navigateTo({
       url: 'pages/class_create/class_create',
     })
   },
@@ -34,7 +34,7 @@ Page({
   go_into_class: function(e){
     app.globalData.class_id=e.currentTarget.dataset.classid
     console.log('传入的班级id为：',e.currentTarget.dataset.classid)
-    wx.redirectTo({  //页面跳转
+    wx.navigateTo({  //页面跳转
       url: '../team_list/team_list',
     })
   },
